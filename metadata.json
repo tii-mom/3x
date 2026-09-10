@@ -1,0 +1,6 @@
+{
+  "name": "TON AI Wealth Agent",
+  "description": "Autonomous TON ecosystem liquidity management and AI strategy control center with institutional guardrails and sub-wallet architecture.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

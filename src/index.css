@@ -1,0 +1,53 @@
+@import "tailwindcss";
+@import "./styles/globals.css";
+
+@theme {
+  --font-manrope: "Manrope", sans-serif;
+  --font-inter: "Inter", sans-serif;
+  --font-geist: "Geist", sans-serif;
+  --font-mono: "Geist Mono", monospace;
+}
+
+body {
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  min-height: 100dvh;
+}
+
+.font-headline {
+  font-family: var(--font-manrope), sans-serif;
+}
+
+.font-tabular {
+  font-family: var(--font-geist), monospace, sans-serif;
+  font-feature-settings: "tnum" 1, "cv05" 1;
+}
+
+.font-mono-data {
+  font-family: var(--font-mono), monospace;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
