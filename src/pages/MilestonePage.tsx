@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Flag, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Flag, Info, Sparkles } from 'lucide-react';
 import { PrimaryButton } from '../components/ui/PrimaryButton';
 import { formatUsd } from '../utils/formatters';
 
@@ -9,7 +9,8 @@ export const MilestonePage: React.FC = () => {
   const capitalStr = sessionStorage.getItem('onboarding_capital') || '100';
   const capital = parseFloat(capitalStr);
 
-  const [multiplier, setMultiplier] = useState<number>(3);
+  // Core 3X milestone product
+  const multiplier = 3;
   const target = capital * multiplier;
 
   return (
@@ -22,16 +23,16 @@ export const MilestonePage: React.FC = () => {
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
-          <span className="text-[12px] font-mono text-[#64748B]">Step 2 of 4: Milestone</span>
+          <span className="text-[12px] font-mono text-[#64748B]">Step 2 of 4</span>
           <div className="w-9" />
         </div>
 
         <div>
-          <h1 className="text-[24px] font-extrabold text-[#11141C] font-headline tracking-tight">
-            Target Wealth Milestone
+          <h1 className="text-[24px] sm:text-[26px] font-extrabold text-[#11141C] font-headline tracking-tight">
+            Your first milestone
           </h1>
           <p className="text-[14px] text-[#64748B] mt-1">
-            Define your first autonomous target milestone. Your AI Agent will structure risks to hit this goal.
+            Your AI will work toward this milestone while adapting to market conditions.
           </p>
         </div>
       </div>
@@ -41,38 +42,32 @@ export const MilestonePage: React.FC = () => {
         <div className="bg-[#090B10] text-white rounded-3xl p-6 border border-white/10 text-center relative overflow-hidden shadow-xl">
           <div className="absolute -top-12 -right-12 w-36 h-36 bg-[#3AC8FF]/20 rounded-full blur-2xl" />
           <div className="text-[11px] font-mono uppercase text-[#3AC8FF] tracking-wider">
-            Level 01 Milestone Target
+            Level 1 Target (3x)
           </div>
-          <div className="text-[42px] font-black text-white font-headline tracking-tight mt-1">
-            {formatUsd(target)}
+          <div className="text-[46px] font-black text-white font-headline tracking-tight mt-1">
+            {formatUsd(target, 0, 0)}
           </div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-[12px] font-mono text-white/80 mt-2">
             <Sparkles className="w-3.5 h-3.5 text-[#3AC8FF]" />
-            <span>{multiplier}x Geometric Growth</span>
+            <span>Target: 3x Starting Capital</span>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-white/10 flex justify-between text-[12px] text-white/60">
-            <span>Starting: {formatUsd(capital)}</span>
-            <span>Target Profit: +{formatUsd(target - capital)}</span>
+          <div className="mt-6 pt-4 border-t border-white/10 flex justify-between text-[13px] text-white/70">
+            <span>Starting: <strong className="text-white font-mono">{formatUsd(capital, 0, 0)}</strong></span>
+            <span>Milestone: <strong className="text-white font-mono">Level 1</strong></span>
           </div>
         </div>
 
-        {/* Multiplier options */}
-        <div className="grid grid-cols-3 gap-2 text-center">
-          {[2, 3, 5].map((m) => (
-            <button
-              key={m}
-              onClick={() => setMultiplier(m)}
-              className={`p-3 rounded-2xl border transition-all cursor-pointer ${
-                multiplier === m
-                  ? 'bg-white border-[#2F6BFF] ring-2 ring-[#2F6BFF]/15 font-bold text-[#2F6BFF]'
-                  : 'bg-white border-[#E2E7F0] text-[#64748B] hover:border-[#CBD5E1]'
-              }`}
-            >
-              <div className="text-[15px] font-mono">{m}x Goal</div>
-              <div className="text-[11px] text-[#64748B] mt-0.5">{formatUsd(capital * m, 0, 0)}</div>
-            </button>
-          ))}
+        {/* Milestone Path Preview */}
+        <div className="bg-white rounded-2xl p-4 border border-[#E2E7F0] space-y-2">
+          <div className="text-[12px] font-semibold text-[#64748B] uppercase tracking-wider">
+            Progression Roadmap
+          </div>
+          <div className="flex items-center justify-between text-[13px] pt-1">
+            <span className="font-semibold text-[#11141C]">Level 1: {formatUsd(target, 0, 0)} (Next)</span>
+            <span className="text-[#64748B]">Level 2: {formatUsd(target * 3, 0, 0)}</span>
+            <span className="text-[#94A3B8]">Level 3: {formatUsd(target * 9, 0, 0)}</span>
+          </div>
         </div>
       </div>
 
@@ -86,8 +81,13 @@ export const MilestonePage: React.FC = () => {
           }}
           icon={<ArrowRight className="w-4 h-4" />}
         >
-          Lock In {formatUsd(target, 0, 0)} Goal
+          Continue
         </PrimaryButton>
+
+        <p className="text-[11px] text-center text-[#94A3B8] flex items-center justify-center gap-1.5 px-4 leading-normal">
+          <Info className="w-3.5 h-3.5 text-[#94A3B8] shrink-0" />
+          <span>Milestones are goals, not guaranteed returns.</span>
+        </p>
       </div>
     </div>
   );

@@ -29,8 +29,8 @@ export const AllocationCard: React.FC<AllocationCardProps> = ({
             <PieChart className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-[14px] font-bold text-[#11141C]">Mandated Allocation</h3>
-            <p className="text-[11px] text-[#64748B]">Autonomous dynamic rebalancing</p>
+            <h3 className="text-[14px] font-bold text-[#11141C]">My Assets</h3>
+            <p className="text-[11px] text-[#64748B]">Organized into Reserve, Yield & Growth</p>
           </div>
         </div>
 
@@ -39,7 +39,7 @@ export const AllocationCard: React.FC<AllocationCardProps> = ({
             onClick={onExplorePortfolio}
             className="text-[12px] font-semibold text-[#2F6BFF] hover:underline flex items-center gap-1 cursor-pointer"
           >
-            Breakdown
+            All Assets
             <ArrowRight className="w-3 h-3" />
           </button>
         )}
@@ -57,7 +57,7 @@ export const AllocationCard: React.FC<AllocationCardProps> = ({
           <div className="text-[13px] font-bold text-[#11141C] font-mono mt-0.5">
             {formatUsd(reserveUsd)}
           </div>
-          <div className="text-[10px] text-[#64748B] font-mono">42% (Floor)</div>
+          <div className="text-[10px] text-[#64748B] font-mono">Lower risk</div>
         </div>
 
         <div className="bg-[#F8FAFC] rounded-2xl p-2.5 border border-[#E2E7F0]">
@@ -68,7 +68,7 @@ export const AllocationCard: React.FC<AllocationCardProps> = ({
           <div className="text-[13px] font-bold text-[#11141C] font-mono mt-0.5">
             {formatUsd(yieldUsd)}
           </div>
-          <div className="text-[10px] text-[#00B074] font-semibold font-mono">33% (18% APY)</div>
+          <div className="text-[10px] text-[#00B074] font-semibold font-mono">Ongoing yield</div>
         </div>
 
         <div className="bg-[#F8FAFC] rounded-2xl p-2.5 border border-[#E2E7F0]">
@@ -79,7 +79,7 @@ export const AllocationCard: React.FC<AllocationCardProps> = ({
           <div className="text-[13px] font-bold text-[#11141C] font-mono mt-0.5">
             {formatUsd(growthUsd)}
           </div>
-          <div className="text-[10px] text-[#64748B] font-mono">25% (Cap)</div>
+          <div className="text-[10px] text-[#64748B] font-mono">Higher growth</div>
         </div>
       </div>
     </div>

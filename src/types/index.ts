@@ -19,7 +19,11 @@ export interface PortfolioAllocation {
 export interface PortfolioOverview {
   nav: number;
   startingCapital: number;
+  netContributions: number;
+  investmentPnL: number;
   pnlSinceStart: number;
+  realizedPnL?: number;
+  unrealizedPnL?: number;
   nextMilestone: number;
   milestoneProgress: number;
   autopilotStatus: AutopilotStatus;
@@ -61,6 +65,7 @@ export interface MilestoneLevel {
 
 export interface Goal {
   currentLevel: number;
+  levelStartNav: number;
   startingNav: number;
   currentNav: number;
   targetNav: number;
@@ -75,9 +80,12 @@ export type ActivityEventType =
   | 'INVESTED'
   | 'EXITED'
   | 'PROTECTED'
+  | 'PROTECTED_PROFIT'
   | 'RISK_CHANGED'
   | 'MILESTONE'
-  | 'REBALANCING';
+  | 'REBALANCING'
+  | 'CAPITAL_ADDED'
+  | 'WITHDRAWAL';
 
 export type ActivityFilter = 'All' | 'Money' | 'AI' | 'Risk';
 

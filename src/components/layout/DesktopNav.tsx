@@ -22,12 +22,12 @@ export const DesktopNav: React.FC = () => {
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
 
   const navItems = [
-    { to: '/app', label: 'Overview', icon: <Home className="w-4 h-4" /> },
-    { to: '/app/ai', label: 'AI Control Center', icon: <Bot className="w-4 h-4" /> },
-    { to: '/app/portfolio', label: 'Portfolio', icon: <PieChart className="w-4 h-4" /> },
-    { to: '/app/goal', label: 'Goal Journey', icon: <Target className="w-4 h-4" /> },
-    { to: '/app/activity', label: 'Activity Logs', icon: <Activity className="w-4 h-4" /> },
-    { to: '/app/controls', label: 'Safety & Controls', icon: <Settings className="w-4 h-4" /> },
+    { to: '/app', label: 'Home', icon: <Home className="w-4 h-4" /> },
+    { to: '/app/ai', label: 'Your AI', icon: <Bot className="w-4 h-4" /> },
+    { to: '/app/portfolio', label: 'My Assets', icon: <PieChart className="w-4 h-4" /> },
+    { to: '/app/goal', label: 'Wealth Journey', icon: <Target className="w-4 h-4" /> },
+    { to: '/app/activity', label: 'What AI Did', icon: <Activity className="w-4 h-4" /> },
+    { to: '/app/controls', label: 'Controls', icon: <Settings className="w-4 h-4" /> },
   ];
 
   return (
@@ -43,15 +43,13 @@ export const DesktopNav: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="font-headline font-bold text-[16px] text-[#11141C] tracking-tight">
-                    TON Wealth Agent
+                    TON AI Wealth Agent
                   </span>
-                  {USE_MOCK_API && (
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#F0F3FA] text-[#2F6BFF] border border-[#2F6BFF]/20">
-                      Mock Data
-                    </span>
-                  )}
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#F0F3FA] text-[#2F6BFF] border border-[#2F6BFF]/20">
+                    DEMO • Simulated
+                  </span>
                 </div>
-                <p className="text-[11px] text-[#64748B] -mt-0.5 font-medium">Autonomous Liquidity Protocol</p>
+                <p className="text-[11px] text-[#64748B] -mt-0.5 font-medium">Personal AI Wealth Agent</p>
               </div>
             </Link>
 

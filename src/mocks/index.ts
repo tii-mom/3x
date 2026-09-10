@@ -10,7 +10,11 @@ import {
 export const initialPortfolioOverview: PortfolioOverview = {
   nav: 184.28,
   startingCapital: 100.0,
+  netContributions: 100.0,
+  investmentPnL: 84.28,
   pnlSinceStart: 84.28,
+  realizedPnL: 8.20,
+  unrealizedPnL: 76.08,
   nextMilestone: 300.0,
   milestoneProgress: 0.614,
   autopilotStatus: 'RUNNING',
@@ -110,6 +114,7 @@ export const initialPortfolioCategories: PortfolioCategoryData[] = [
 
 export const initialGoal: Goal = {
   currentLevel: 1,
+  levelStartNav: 100.0,
   startingNav: 100.0,
   currentNav: 184.28,
   targetNav: 300.0,
@@ -271,6 +276,8 @@ export const initialControls: WealthControls = {
   slippageTolerancePercent: 0.05,
   isEmergencyPaused: false,
 };
+
+export const USE_MOCK_API = true;
 
 // Historical chart data
 export const chartData24H = [

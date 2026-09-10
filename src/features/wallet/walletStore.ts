@@ -18,6 +18,11 @@ import {
   initialWallet,
   initialControls,
 } from '../../mocks';
+import {
+  calculateMilestoneProgress,
+  calculateInvestmentPnL,
+  advanceToNextMilestone,
+} from '../../services/goalService';
 
 interface AppStoreState {
   portfolio: PortfolioOverview;
@@ -44,6 +49,7 @@ interface AppStoreState {
   disconnectWallet: () => void;
   triggerAiRebalance: () => Promise<void>;
   simulateMilestoneReach: () => void;
+  advanceMilestone: () => void;
   resetToInitialState: () => void;
 }
 
@@ -123,28 +129,22 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
   addCapital: (amount: number, asset = 'USDT') =>
     set((state) => {
       const newNav = +(state.portfolio.nav + amount).toFixed(2);
-      const newMilestoneProgress = Math.min(
-        1,
-        +(
-          (newNav - state.portfolio.startingCapital) /
-          (state.portfolio.nextMilestone - state.portfolio.startingCapital)
-        ).toFixed(3)
-      );
+      const newNetContributions = +(state.portfolio.netContributions + amount).toFixed(2);
+      const newMilestoneProgress = calculateMilestoneProgress(newNav, state.portfolio.nextMilestone);
 
       const newActivity: ActivityEvent = {
         id: `act-${Date.now()}`,
-        type: 'INVESTED',
-        title: 'Capital Added to Sub-Wallet',
-        description: `Funded +$${amount.toFixed(2)} ${asset} into isolated autopilot balance.`,
+        type: 'CAPITAL_ADDED',
+        title: 'Capital Added by User',
+        description: `Funded +$${amount.toFixed(2)} ${asset} into AI Wallet. Total user capital: $${newNetContributions.toFixed(2)}.`,
         amount,
         timestamp: 'Just now',
         status: 'Confirmed',
-        txHash: `${Math.random().toString(36).substring(2, 6)}...${Math.random().toString(36).substring(2, 6)}`,
         evidence: {
-          source: 'TON Connect Transaction',
+          source: 'User Deposit',
           apy: 'N/A',
           confidence: 100,
-          trigger: 'User approved deposit from primary wallet.',
+          trigger: 'User added capital to AI Wallet.',
         },
       };
 
@@ -152,6 +152,7 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
         portfolio: {
           ...state.portfolio,
           nav: newNav,
+          netContributions: newNetContributions,
           milestoneProgress: newMilestoneProgress,
         },
         goal: {
@@ -161,7 +162,7 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
         },
         wallet: {
           ...state.wallet,
-          subWalletAllocatedUsd: +(state.wallet.subWalletAllocatedUsd + amount).toFixed(2),
+          subWalletAllocatedUsd: newNav,
         },
         activities: [newActivity, ...state.activities],
       };
@@ -169,30 +170,28 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
 
   withdrawCapital: (amount: number) =>
     set((state) => {
-      const newNav = Math.max(state.portfolio.startingCapital, +(state.portfolio.nav - amount).toFixed(2));
-      const newMilestoneProgress = Math.max(
-        0,
-        +(
-          (newNav - state.portfolio.startingCapital) /
-          (state.portfolio.nextMilestone - state.portfolio.startingCapital)
-        ).toFixed(3)
-      );
+      const newNav = Math.max(0, +(state.portfolio.nav - amount).toFixed(2));
+      const newNetContributions = Math.max(0, +(state.portfolio.netContributions - amount).toFixed(2));
+      const newInvestmentPnL = calculateInvestmentPnL(newNav, newNetContributions);
+      const newMilestoneProgress = calculateMilestoneProgress(newNav, state.portfolio.nextMilestone);
 
       const newActivity: ActivityEvent = {
         id: `act-${Date.now()}`,
-        type: 'EXITED',
-        title: 'Withdrawn to Primary Wallet',
-        description: `Returned $${amount.toFixed(2)} USD from isolated sub-wallet back to main wallet.`,
+        type: 'WITHDRAWAL',
+        title: 'Withdrawn to Main Wallet',
+        description: `Returned $${amount.toFixed(2)} from AI Wallet back to primary wallet. Remaining balance: $${newNav.toFixed(2)}.`,
         amount,
         timestamp: 'Just now',
         status: 'Confirmed',
-        txHash: `${Math.random().toString(36).substring(2, 6)}...${Math.random().toString(36).substring(2, 6)}`,
       };
 
       return {
         portfolio: {
           ...state.portfolio,
           nav: newNav,
+          netContributions: newNetContributions,
+          investmentPnL: newInvestmentPnL,
+          pnlSinceStart: newInvestmentPnL,
           milestoneProgress: newMilestoneProgress,
         },
         goal: {
@@ -202,7 +201,7 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
         },
         wallet: {
           ...state.wallet,
-          subWalletAllocatedUsd: Math.max(0, +(state.wallet.subWalletAllocatedUsd - amount).toFixed(2)),
+          subWalletAllocatedUsd: newNav,
         },
         activities: [newActivity, ...state.activities],
       };
@@ -269,13 +268,7 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
 
   updateTargetGoal: (newTarget: number) =>
     set((state) => {
-      const progress = Math.min(
-        1,
-        +(
-          (state.portfolio.nav - state.portfolio.startingCapital) /
-          (newTarget - state.portfolio.startingCapital)
-        ).toFixed(3)
-      );
+      const progress = calculateMilestoneProgress(state.portfolio.nav, newTarget);
 
       return {
         portfolio: {
@@ -292,35 +285,43 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
     }),
 
   completeOnboarding: (startingAmount: number, target: number) =>
-    set((state) => ({
-      isOnboarded: true,
-      portfolio: {
-        ...state.portfolio,
-        nav: startingAmount,
-        startingCapital: startingAmount,
-        pnlSinceStart: 0,
-        nextMilestone: target,
-        milestoneProgress: 0,
-        autopilotStatus: 'RUNNING',
-      },
-      goal: {
-        ...state.goal,
-        startingNav: startingAmount,
-        currentNav: startingAmount,
-        targetNav: target,
-        progress: 0,
-      },
-      wallet: {
-        ...state.wallet,
-        isConnected: true,
-        isSubWalletActive: true,
-        subWalletAllocatedUsd: startingAmount,
-      },
-      controls: {
-        ...state.controls,
-        autopilotStatus: 'RUNNING',
-      },
-    })),
+    set((state) => {
+      const progress = calculateMilestoneProgress(startingAmount, target);
+      return {
+        isOnboarded: true,
+        portfolio: {
+          ...state.portfolio,
+          nav: startingAmount,
+          startingCapital: startingAmount,
+          netContributions: startingAmount,
+          investmentPnL: 0,
+          pnlSinceStart: 0,
+          nextMilestone: target,
+          milestoneProgress: progress,
+          autopilotStatus: 'RUNNING',
+        },
+        goal: {
+          ...state.goal,
+          currentLevel: 1,
+          levelStartNav: startingAmount,
+          startingNav: startingAmount,
+          currentNav: startingAmount,
+          targetNav: target,
+          progress,
+          status: 'ACTIVE',
+        },
+        wallet: {
+          ...state.wallet,
+          isConnected: true,
+          isSubWalletActive: true,
+          subWalletAllocatedUsd: startingAmount,
+        },
+        controls: {
+          ...state.controls,
+          autopilotStatus: 'RUNNING',
+        },
+      };
+    }),
 
   connectWallet: () =>
     set((state) => ({
@@ -340,20 +341,13 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
 
   triggerAiRebalance: async () => {
     set({ isSimulatingScan: true });
-    // Realistic telemetry scan interval
     await new Promise((resolve) => setTimeout(resolve, 1400));
 
     const state = get();
     const yieldIncrement = 0.68;
     const newNav = +(state.portfolio.nav + yieldIncrement).toFixed(2);
-    const newPnl = +(state.portfolio.pnlSinceStart + yieldIncrement).toFixed(2);
-    const newProgress = Math.min(
-      1,
-      +(
-        (newNav - state.portfolio.startingCapital) /
-        (state.portfolio.nextMilestone - state.portfolio.startingCapital)
-      ).toFixed(3)
-    );
+    const newInvestmentPnL = calculateInvestmentPnL(newNav, state.portfolio.netContributions);
+    const newProgress = calculateMilestoneProgress(newNav, state.portfolio.nextMilestone);
 
     const newActivity: ActivityEvent = {
       id: `act-${Date.now()}`,
@@ -362,21 +356,14 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
       description: 'AI detected 18.4% APY opportunity on DeDust TON/USDT LP and captured +$0.68 yield.',
       amount: yieldIncrement,
       timestamp: 'Just now',
-      status: 'Completed',
-      txHash: `${Math.random().toString(36).substring(2, 6)}...${Math.random().toString(36).substring(2, 6)}`,
+      status: 'Confirmed',
       evidence: {
-        source: 'Guardian Engine Live Audit',
+        source: 'AI Live Monitoring',
         apy: '18.4% APY',
         confidence: 97,
         trigger: 'Surge in liquidity pool trading fees detected.',
       },
-      execution: {
-        route: 'USDT -> DeDust LP Vault',
-        slippage: '0.01%',
-        gasFeeTon: '0.006 TON',
-        timestampExact: 'Just now',
-      },
-      reasoningSnippet: 'Rebalancing routed under strict 5% single-action limit with instant profit compounding.',
+      reasoningSnippet: 'Rebalancing routed under platform risk rules with automatic yield compounding.',
     };
 
     set({
@@ -384,7 +371,8 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
       portfolio: {
         ...state.portfolio,
         nav: newNav,
-        pnlSinceStart: newPnl,
+        investmentPnL: newInvestmentPnL,
+        pnlSinceStart: newInvestmentPnL,
         milestoneProgress: newProgress,
         lastReviewMinutes: 0,
       },
@@ -404,15 +392,15 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
   simulateMilestoneReach: () =>
     set((state) => {
       const targetNav = state.portfolio.nextMilestone;
-      const newPnl = +(targetNav - state.portfolio.startingCapital).toFixed(2);
+      const newPnl = calculateInvestmentPnL(targetNav, state.portfolio.netContributions);
       const newActivity: ActivityEvent = {
         id: `act-${Date.now()}`,
         type: 'MILESTONE',
-        title: 'Level 1 Milestone Complete (3x Target)',
+        title: `Level ${state.goal.currentLevel} Milestone Complete (3x Target)`,
         description: `Autonomous portfolio reached target milestone of $${targetNav.toFixed(2)} USD!`,
         amount: targetNav,
         timestamp: 'Just now',
-        status: 'Milestone',
+        status: 'Confirmed',
         evidence: {
           source: 'Goal Milestone Sentinel',
           apy: 'Cumulative +200%',
@@ -425,6 +413,7 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
         portfolio: {
           ...state.portfolio,
           nav: targetNav,
+          investmentPnL: newPnl,
           pnlSinceStart: newPnl,
           milestoneProgress: 1.0,
         },
@@ -438,6 +427,30 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
           ...state.wallet,
           subWalletAllocatedUsd: targetNav,
         },
+        activities: [newActivity, ...state.activities],
+      };
+    }),
+
+  advanceMilestone: () =>
+    set((state) => {
+      const advancedGoal = advanceToNextMilestone(state.goal, state.portfolio.nav);
+      const newActivity: ActivityEvent = {
+        id: `act-${Date.now()}`,
+        type: 'MILESTONE',
+        title: `Level ${advancedGoal.currentLevel} Milestone Started`,
+        description: `Goal updated to $${advancedGoal.targetNav.toFixed(2)}. Your AI continues compounding toward this milestone.`,
+        amount: advancedGoal.targetNav,
+        timestamp: 'Just now',
+        status: 'Confirmed',
+      };
+
+      return {
+        portfolio: {
+          ...state.portfolio,
+          nextMilestone: advancedGoal.targetNav,
+          milestoneProgress: advancedGoal.progress,
+        },
+        goal: advancedGoal,
         activities: [newActivity, ...state.activities],
       };
     }),

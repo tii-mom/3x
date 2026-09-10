@@ -3,17 +3,16 @@ import {
   Activity,
   Bot,
   ChevronRight,
+  Eye,
   Pause,
   Play,
   Radar,
-  RefreshCw,
   Shield,
   Sparkles,
 } from 'lucide-react';
 import { AutopilotStatus } from '../../types';
 import { agentStatusMessages } from './AgentStatus';
 import { useAppStore } from '../../features/wallet/walletStore';
-import { useToast } from '../feedback/Toast';
 
 interface AutopilotCardProps {
   status: AutopilotStatus;
@@ -30,21 +29,49 @@ export const AutopilotCard: React.FC<AutopilotCardProps> = ({
   onOpenScanner,
   className = '',
 }) => {
-  const { isSimulatingScan, triggerAiRebalance } = useAppStore();
-  const { showToast } = useToast();
+  const { portfolio } = useAppStore();
   const isRunning = status === 'RUNNING';
 
-  const handleRunRebalance = async () => {
-    showToast('AI scanning 124 TON liquidity pools...', 'ai');
-    await triggerAiRebalance();
-    showToast('Autonomous rebalance executed: +$0.68 yield compounded!', 'success');
+  const statusDisplayMap: Record<AutopilotStatus, { label: string; desc: string; color: string }> = {
+    RUNNING: {
+      label: 'Running',
+      desc: 'Your AI is monitoring opportunities.',
+      color: '#3AC8FF',
+    },
+    OBSERVING: {
+      label: 'Observing',
+      desc: 'Scanning market depth and yield spreads.',
+      color: '#3AC8FF',
+    },
+    RESEARCHING: {
+      label: 'Researching',
+      desc: 'Evaluating risk-adjusted pools.',
+      color: '#A855F7',
+    },
+    REBALANCING: {
+      label: 'Rebalancing',
+      desc: 'Executing disciplined position adjustments.',
+      color: '#00B074',
+    },
+    PROTECTING: {
+      label: 'Protecting',
+      desc: 'Capital preservation rules active.',
+      color: '#F59E0B',
+    },
+    PAUSED: {
+      label: 'Paused',
+      desc: 'AI is idle. Your capital remains safe.',
+      color: '#94A3B8',
+    },
   };
+
+  const currentDisplay = statusDisplayMap[status] || statusDisplayMap.RUNNING;
 
   return (
     <div
       className={`relative overflow-hidden rounded-3xl bg-[#090B10] text-white p-6 border border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.4)] ${className}`}
     >
-      {/* Background Subtle Intelligence Halo */}
+      {/* Background Intelligence Halo */}
       <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#3AC8FF]/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-[#2F6BFF]/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -57,13 +84,13 @@ export const AutopilotCard: React.FC<AutopilotCardProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[15px] font-bold tracking-tight text-white font-headline">
-                Autopilot Engine
+                AI Autopilot
               </span>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#3AC8FF]/15 text-[#3AC8FF] border border-[#3AC8FF]/30 font-mono">
-                Guardian v4.8
+                {currentDisplay.label}
               </span>
             </div>
-            <p className="text-[12px] text-white/60">Autonomous TON Liquidity Agent</p>
+            <p className="text-[12px] text-white/60">Autonomous Wealth Agent</p>
           </div>
         </div>
 
@@ -80,34 +107,40 @@ export const AutopilotCard: React.FC<AutopilotCardProps> = ({
             {isRunning ? (
               <>
                 <Pause className="w-3.5 h-3.5" />
-                <span>Pause</span>
+                <span>Pause AI</span>
               </>
             ) : (
               <>
                 <Play className="w-3.5 h-3.5 fill-current" />
-                <span>Resume</span>
+                <span>Resume AI</span>
               </>
             )}
           </button>
         </div>
       </div>
 
-      {/* Agent Live Message Box with Run Scan Action */}
-      <div className="relative z-10 mt-5 p-3.5 rounded-2xl bg-white/[0.04] border border-white/10 space-y-3">
+      {/* Autonomous Status Box */}
+      <div className="relative z-10 mt-5 p-3.5 rounded-2xl bg-white/[0.04] border border-white/10 space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="relative">
-              <div className={`w-3 h-3 rounded-full ${isRunning ? 'bg-[#3AC8FF]' : 'bg-[#64748B]'}`} />
+              <div
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: currentDisplay.color }}
+              />
               {isRunning && (
-                <div className="absolute inset-0 rounded-full bg-[#3AC8FF] animate-ping opacity-75" />
+                <div
+                  className="absolute inset-0 rounded-full animate-ping opacity-75"
+                  style={{ backgroundColor: currentDisplay.color }}
+                />
               )}
             </div>
             <div>
               <div className="text-[11px] text-white/50 uppercase font-mono tracking-wider">
-                Agent Activity
+                Current Activity
               </div>
               <div className="text-[13px] font-semibold text-white">
-                {isSimulatingScan ? 'Auditing 124 DEX pools...' : agentStatusMessages[status]}
+                {currentDisplay.desc}
               </div>
             </div>
           </div>
@@ -117,33 +150,19 @@ export const AutopilotCard: React.FC<AutopilotCardProps> = ({
               onClick={onOpenReasoning}
               className="text-[12px] font-semibold text-[#3AC8FF] hover:underline flex items-center gap-1 cursor-pointer"
             >
-              Reasoning
+              Why AI did this
               <ChevronRight className="w-3.5 h-3.5" />
             </button>
           )}
         </div>
 
-        {/* Quick autonomous cycle execution button */}
-        <button
-          onClick={handleRunRebalance}
-          disabled={isSimulatingScan || !isRunning}
-          className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-[#2F6BFF]/30 to-[#3AC8FF]/20 hover:from-[#2F6BFF]/40 hover:to-[#3AC8FF]/30 border border-[#3AC8FF]/30 text-white text-[12px] font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-50"
-        >
-          {isSimulatingScan ? (
-            <>
-              <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#3AC8FF]" />
-              <span>Scanning Pools & Arbitraging Yield...</span>
-            </>
-          ) : (
-            <>
-              <Sparkles className="w-3.5 h-3.5 text-[#3AC8FF]" />
-              <span>Trigger AI Yield Scan & Micro-Rebalance</span>
-            </>
-          )}
-        </button>
+        <div className="flex items-center justify-between text-[11px] text-white/60 pt-1 border-t border-white/5 font-mono">
+          <span>Current mode: <strong className="text-white">Grow</strong></span>
+          <span>Last review: <strong className="text-white">{portfolio.lastReviewMinutes || 8} min ago</strong></span>
+        </div>
       </div>
 
-      {/* Real-time Telemetry Grid */}
+      {/* Non-manual Telemetry Grid */}
       <div className="relative z-10 mt-4 grid grid-cols-3 gap-2.5">
         <div
           onClick={onOpenScanner}
@@ -151,28 +170,28 @@ export const AutopilotCard: React.FC<AutopilotCardProps> = ({
         >
           <div className="flex items-center gap-1 text-[11px] text-white/50 group-hover:text-white/80">
             <Radar className="w-3.5 h-3.5 text-[#3AC8FF]" />
-            <span>Pools Scanned</span>
+            <span className="truncate">Opportunities</span>
           </div>
           <div className="text-[16px] font-bold text-white font-mono mt-1">124 Live</div>
-          <div className="text-[10px] text-[#00B074] mt-0.5">0.02% Avg Slip</div>
+          <div className="text-[10px] text-[#00B074] mt-0.5">Monitored</div>
         </div>
 
         <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/5">
           <div className="flex items-center gap-1 text-[11px] text-white/50">
             <Activity className="w-3.5 h-3.5 text-[#00B074]" />
-            <span>Current APY</span>
+            <span className="truncate">Current focus</span>
           </div>
-          <div className="text-[16px] font-bold text-[#00B074] font-mono mt-1">18.2%</div>
-          <div className="text-[10px] text-white/50 mt-0.5">TON/USDT Vault</div>
+          <div className="text-[15px] font-bold text-[#00B074] font-mono mt-1">Balanced</div>
+          <div className="text-[10px] text-white/50 mt-0.5">Auto-compounding</div>
         </div>
 
         <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/5">
           <div className="flex items-center gap-1 text-[11px] text-white/50">
             <Shield className="w-3.5 h-3.5 text-[#2F6BFF]" />
-            <span>Volatility</span>
+            <span className="truncate">Portfolio risk</span>
           </div>
-          <div className="text-[16px] font-bold text-white font-mono mt-1">&lt; 0.04%</div>
-          <div className="text-[10px] text-[#00B074] mt-0.5">Calm Corridor</div>
+          <div className="text-[15px] font-bold text-white font-mono mt-1">Balanced</div>
+          <div className="text-[10px] text-[#00B074] mt-0.5">5% Max Action</div>
         </div>
       </div>
     </div>

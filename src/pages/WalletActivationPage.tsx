@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CheckCircle2, Lock, ShieldCheck, Wallet } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, ShieldAlert, ShieldCheck, Wallet } from 'lucide-react';
 import { PrimaryButton } from '../components/ui/PrimaryButton';
 import { useAppStore } from '../features/wallet/walletStore';
 import { formatAddress } from '../utils/formatters';
+import { USE_MOCK_API } from '../mocks';
 
 export const WalletActivationPage: React.FC = () => {
   const navigate = useNavigate();
@@ -29,18 +30,25 @@ export const WalletActivationPage: React.FC = () => {
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
-          <span className="text-[12px] font-mono text-[#64748B]">Step 4 of 4: Sub-Wallet</span>
+          <span className="text-[12px] font-mono text-[#64748B]">Step 4 of 4</span>
           <div className="w-9" />
         </div>
 
         <div>
           <h1 className="text-[24px] font-extrabold text-[#11141C] font-headline tracking-tight">
-            Activate Isolated Sub-Wallet
+            Activate Your AI Wallet
           </h1>
           <p className="text-[14px] text-[#64748B] mt-1">
-            We instantiate an isolated smart contract sub-wallet for your agent. Your personal wallet balance is never exposed.
+            An isolated smart contract sub-wallet for your agent. Your main wallet balance is never exposed.
           </p>
         </div>
+
+        {USE_MOCK_API && (
+          <div className="px-3 py-1.5 rounded-xl bg-[#F0F3FA] border border-[#2F6BFF]/20 flex items-center gap-2 text-[12px] text-[#2F6BFF]">
+            <span className="font-bold font-mono">DEMO WALLET</span>
+            <span className="text-[#64748B]">• No real blockchain transaction required</span>
+          </div>
+        )}
       </div>
 
       <div className="space-y-4 my-6">
@@ -52,7 +60,7 @@ export const WalletActivationPage: React.FC = () => {
                 <Wallet className="w-4 h-4" />
               </div>
               <div>
-                <div className="text-[11px] text-[#64748B] font-mono uppercase">Your Personal Wallet</div>
+                <div className="text-[11px] text-[#64748B] font-mono uppercase">User-Controlled Owner Wallet</div>
                 <div className="text-[13px] font-bold text-[#11141C] font-mono">
                   {formatAddress(wallet.ownerAddress)}
                 </div>
@@ -65,7 +73,7 @@ export const WalletActivationPage: React.FC = () => {
 
           <div className="flex items-center justify-center gap-2 text-[12px] font-mono text-[#64748B]">
             <span className="w-6 h-px bg-[#CBD5E1]" />
-            <span>100% Cryptographic Isolation</span>
+            <span>Separate AI Wallet</span>
             <span className="w-6 h-px bg-[#CBD5E1]" />
           </div>
 
@@ -75,14 +83,14 @@ export const WalletActivationPage: React.FC = () => {
                 <ShieldCheck className="w-4 h-4" />
               </div>
               <div>
-                <div className="text-[11px] text-white/50 font-mono uppercase">Agent Sub-Wallet</div>
+                <div className="text-[11px] text-white/50 font-mono uppercase">Dedicated AI Wallet</div>
                 <div className="text-[13px] font-bold text-white font-mono">
                   {formatAddress(wallet.subWalletAddress)}
                 </div>
               </div>
             </div>
             <span className="text-[11px] font-bold text-[#3AC8FF] bg-[#3AC8FF]/15 px-2 py-0.5 rounded-full font-mono">
-              Non-Custodial
+              AI Managed
             </span>
           </div>
         </div>
@@ -91,15 +99,15 @@ export const WalletActivationPage: React.FC = () => {
         <div className="space-y-2 text-[13px] text-[#334155] px-1">
           <div className="flex items-start gap-2.5">
             <CheckCircle2 className="w-4 h-4 text-[#00B074] shrink-0 mt-0.5" />
-            <span>Zero access to your main wallet private keys or assets.</span>
+            <span>Zero access to your main wallet private keys or personal balance.</span>
           </div>
           <div className="flex items-start gap-2.5">
             <CheckCircle2 className="w-4 h-4 text-[#00B074] shrink-0 mt-0.5" />
-            <span>Agent can only execute trades within the 5% single-action limit.</span>
+            <span>AI execution is protected by platform risk rules and limits.</span>
           </div>
           <div className="flex items-start gap-2.5">
             <CheckCircle2 className="w-4 h-4 text-[#00B074] shrink-0 mt-0.5" />
-            <span>One-click instant capital sweep back to your wallet anytime.</span>
+            <span>You can pause autopilot or revoke AI access at any time.</span>
           </div>
         </div>
       </div>
@@ -111,7 +119,7 @@ export const WalletActivationPage: React.FC = () => {
           disabled={isActivating}
           icon={isActivating ? undefined : <ShieldCheck className="w-4 h-4" />}
         >
-          {isActivating ? 'Initializing Smart Contract...' : 'Activate Agent Sub-Wallet'}
+          {isActivating ? 'Activating AI Wallet...' : 'Activate AI Wallet & Continue'}
         </PrimaryButton>
       </div>
     </div>

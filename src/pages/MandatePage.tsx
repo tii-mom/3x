@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, ShieldCheck, Sparkles, TrendingUp, Zap } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, Lock, ShieldCheck, Sparkles } from 'lucide-react';
 import { PrimaryButton } from '../components/ui/PrimaryButton';
-import { ProfitPreference, AiMode } from '../types';
 
 export const MandatePage: React.FC = () => {
   const navigate = useNavigate();
-  const [strategyMode, setStrategyMode] = useState<AiMode>('GROW');
-  const [profitPref, setProfitPref] = useState<ProfitPreference>('COMPOUND_ALL');
 
   return (
     <div className="min-h-screen bg-[#F9F9FF] text-[#11141C] flex flex-col justify-between p-4 sm:p-6 max-w-lg mx-auto">
@@ -19,101 +16,83 @@ export const MandatePage: React.FC = () => {
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
-          <span className="text-[12px] font-mono text-[#64748B]">Step 3 of 4: Mandate</span>
+          <span className="text-[12px] font-mono text-[#64748B]">Step 3 of 4</span>
           <div className="w-9" />
         </div>
 
         <div>
-          <h1 className="text-[24px] font-extrabold text-[#11141C] font-headline tracking-tight">
-            AI Operating Mandate
+          <h1 className="text-[24px] sm:text-[26px] font-extrabold text-[#11141C] font-headline tracking-tight leading-snug">
+            You set the capital.<br />
+            AI handles the work.
           </h1>
-          <p className="text-[14px] text-[#64748B] mt-1">
-            Choose how your agent navigates opportunities and handles captured yield.
+          <p className="text-[14px] text-[#64748B] mt-1.5">
+            Your AI operates autonomously within strict non-custodial boundaries.
           </p>
         </div>
       </div>
 
-      <div className="space-y-6 my-6">
-        {/* Strategy Mode */}
-        <div className="space-y-2.5">
-          <label className="text-[12px] font-bold text-[#64748B] uppercase tracking-wider">
-            Operational Strategy
-          </label>
-          <div className="space-y-2">
-            {[
-              {
-                mode: 'GROW' as AiMode,
-                title: 'Grow Mode (Balanced)',
-                desc: 'Dynamically rebalances across top 120+ pools with 5% risk guardrails.',
-                badge: 'Recommended',
-              },
-              {
-                mode: 'PRESERVE' as AiMode,
-                title: 'Preserve & Harvest',
-                desc: 'Prioritizes stable yields and keeps higher cash reserves in USDT.',
-              },
-              {
-                mode: 'SHIELDED' as AiMode,
-                title: 'Shielded Fixed Staking',
-                desc: 'Allocates strictly to verified liquid staking (bemo stTON).',
-              },
-            ].map((item) => (
-              <div
-                key={item.mode}
-                onClick={() => setStrategyMode(item.mode)}
-                className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
-                  strategyMode === item.mode
-                    ? 'bg-white border-[#2F6BFF] ring-2 ring-[#2F6BFF]/10 shadow-xs'
-                    : 'bg-white border-[#E2E7F0] hover:border-[#CBD5E1]'
-                }`}
-              >
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[14px] font-bold text-[#11141C]">{item.title}</span>
-                    {item.badge && (
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#00B074]/15 text-[#00B074] font-bold">
-                        {item.badge}
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-[12px] text-[#64748B] mt-0.5">{item.desc}</p>
-                </div>
-                <div
-                  className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                    strategyMode === item.mode ? 'border-[#2F6BFF] bg-[#2F6BFF]' : 'border-[#CBD5E1]'
-                  }`}
-                >
-                  {strategyMode === item.mode && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
-                </div>
-              </div>
-            ))}
+      <div className="space-y-5 my-6">
+        {/* Three Core Guarantees */}
+        <div className="bg-white rounded-2xl p-5 border border-[#E2E7F0] space-y-3.5 shadow-xs">
+          <div className="flex items-start gap-3">
+            <div className="w-7 h-7 rounded-lg bg-[#EBF2FF] text-[#2F6BFF] flex items-center justify-center shrink-0 mt-0.5">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-[14px] font-bold text-[#11141C]">Your main wallet stays yours</div>
+              <p className="text-[12px] text-[#64748B] mt-0.5 leading-relaxed">
+                AI has zero access to your primary wallet keys, personal funds, or other tokens.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3 pt-3 border-t border-[#F1F5F9]">
+            <div className="w-7 h-7 rounded-lg bg-[#E6F9F2] text-[#00B074] flex items-center justify-center shrink-0 mt-0.5">
+              <Lock className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-[14px] font-bold text-[#11141C]">AI manages only the AI Wallet</div>
+              <p className="text-[12px] text-[#64748B] mt-0.5 leading-relaxed">
+                Actions are strictly restricted to the specific capital you deposit into your AI Wallet.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3 pt-3 border-t border-[#F1F5F9]">
+            <div className="w-7 h-7 rounded-lg bg-[#F0F3FA] text-[#11141C] flex items-center justify-center shrink-0 mt-0.5">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-[14px] font-bold text-[#11141C]">You can pause or withdraw anytime</div>
+              <p className="text-[12px] text-[#64748B] mt-0.5 leading-relaxed">
+                Take full control back in one tap. Pause autopilot or sweep funds back to your wallet instantly.
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Profit Preference */}
-        <div className="space-y-2.5">
-          <label className="text-[12px] font-bold text-[#64748B] uppercase tracking-wider">
-            Profit Preference
-          </label>
-          <div className="grid grid-cols-3 gap-2">
-            {[
-              { id: 'COMPOUND_ALL' as ProfitPreference, label: 'Auto Compound', sub: 'Maximize APY' },
-              { id: 'WITHDRAW_PROFIT' as ProfitPreference, label: 'Safe Floor', sub: 'Route to USDT' },
-              { id: 'SPLIT_PROFIT' as ProfitPreference, label: 'Split 50/50', sub: 'Balanced' },
-            ].map((p) => (
-              <button
-                key={p.id}
-                onClick={() => setProfitPref(p.id)}
-                className={`p-3 rounded-2xl border text-center transition-all cursor-pointer ${
-                  profitPref === p.id
-                    ? 'bg-white border-[#2F6BFF] ring-2 ring-[#2F6BFF]/10 font-bold text-[#2F6BFF]'
-                    : 'bg-white border-[#E2E7F0] text-[#64748B] hover:border-[#CBD5E1]'
-                }`}
-              >
-                <div className="text-[13px] font-semibold">{p.label}</div>
-                <div className="text-[10px] text-[#64748B] mt-0.5">{p.sub}</div>
-              </button>
-            ))}
+        {/* What AI may do */}
+        <div className="bg-white rounded-2xl p-4.5 border border-[#E2E7F0] space-y-2.5">
+          <div className="text-[12px] font-bold text-[#64748B] uppercase tracking-wider">
+            What your AI is permitted to do
+          </div>
+          <div className="grid grid-cols-2 gap-2 text-[12px]">
+            <div className="flex items-center gap-2 p-2 rounded-xl bg-[#F8FAFC]">
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#00B074] shrink-0" />
+              <span className="font-medium text-[#11141C]">Research yield pools</span>
+            </div>
+            <div className="flex items-center gap-2 p-2 rounded-xl bg-[#F8FAFC]">
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#00B074] shrink-0" />
+              <span className="font-medium text-[#11141C]">Capture & compound gains</span>
+            </div>
+            <div className="flex items-center gap-2 p-2 rounded-xl bg-[#F8FAFC]">
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#00B074] shrink-0" />
+              <span className="font-medium text-[#11141C]">Rebalance risk</span>
+            </div>
+            <div className="flex items-center gap-2 p-2 rounded-xl bg-[#F8FAFC]">
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#00B074] shrink-0" />
+              <span className="font-medium text-[#11141C]">Protect profits</span>
+            </div>
           </div>
         </div>
       </div>
@@ -122,13 +101,13 @@ export const MandatePage: React.FC = () => {
         <PrimaryButton
           size="lg"
           onClick={() => {
-            sessionStorage.setItem('onboarding_strategy', strategyMode);
-            sessionStorage.setItem('onboarding_profit', profitPref);
+            sessionStorage.setItem('onboarding_strategy', 'GROW');
+            sessionStorage.setItem('onboarding_profit', 'COMPOUND_ALL');
             navigate('/wallet/activate');
           }}
           icon={<ArrowRight className="w-4 h-4" />}
         >
-          Proceed to Wallet Activation
+          Activate my AI
         </PrimaryButton>
       </div>
     </div>

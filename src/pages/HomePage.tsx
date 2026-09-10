@@ -25,10 +25,10 @@ export const HomePage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-[22px] sm:text-[26px] font-extrabold text-[#11141C] font-headline tracking-tight">
-            Autonomous Wealth Overview
+            Your Wealth
           </h1>
           <p className="text-[13px] text-[#64748B]">
-            Your AI is continuously balancing yield and capital preservation.
+            Your AI is actively monitoring opportunities to grow and protect your assets.
           </p>
         </div>
 

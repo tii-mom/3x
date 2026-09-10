@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle2, ChevronRight, Lock, ShieldCheck, Sparkles, Wallet } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, ShieldCheck, Sparkles, Wallet } from 'lucide-react';
 import { PrimaryButton } from '../components/ui/PrimaryButton';
 import { useAppStore } from '../features/wallet/walletStore';
 import { formatUsd } from '../utils/formatters';
+import { USE_MOCK_API } from '../mocks';
 
 export const FundingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -15,15 +16,18 @@ export const FundingPage: React.FC = () => {
   const target = parseFloat(targetStr);
 
   const [selectedAsset, setSelectedAsset] = useState<'USDT' | 'TON'>('USDT');
-  const [isFunding, setIsFunding] = useState(false);
+  const [fundingState, setFundingState] = useState<'IDLE' | 'SIMULATING' | 'CONFIRMED'>('IDLE');
 
   const handleFund = () => {
-    setIsFunding(true);
+    setFundingState('SIMULATING');
     setTimeout(() => {
       completeOnboarding(capital, target);
-      setIsFunding(false);
-      navigate('/app');
+      setFundingState('CONFIRMED');
     }, 700);
+  };
+
+  const handleStartAutopilot = () => {
+    navigate('/app');
   };
 
   return (
@@ -32,86 +36,122 @@ export const FundingPage: React.FC = () => {
         <div className="flex items-center justify-between">
           <button
             onClick={() => navigate('/wallet/activate')}
-            className="w-9 h-9 rounded-full bg-white border border-[#E2E7F0] flex items-center justify-center text-[#64748B] hover:text-[#11141C] cursor-pointer"
+            disabled={fundingState !== 'IDLE'}
+            className="w-9 h-9 rounded-full bg-white border border-[#E2E7F0] flex items-center justify-center text-[#64748B] hover:text-[#11141C] cursor-pointer disabled:opacity-40"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
-          <span className="text-[12px] font-mono text-[#64748B]">Final Step: Fund Agent</span>
+          <span className="text-[12px] font-mono text-[#64748B]">Step 4 of 4</span>
           <div className="w-9" />
         </div>
 
         <div>
           <h1 className="text-[24px] font-extrabold text-[#11141C] font-headline tracking-tight">
-            Deposit Starting Capital
+            {fundingState === 'CONFIRMED' ? 'Your AI is ready.' : 'Give your AI its starting capital.'}
           </h1>
           <p className="text-[14px] text-[#64748B] mt-1">
-            Authorize a transfer of {formatUsd(capital)} from your wallet to fund your autonomous agent.
+            {fundingState === 'CONFIRMED'
+              ? 'Your AI Wallet is funded and ready to launch autonomous operations.'
+              : `Deposit ${formatUsd(capital, 0, 0)} to enable your agent to work toward your milestone.`}
           </p>
         </div>
+
+        {USE_MOCK_API && (
+          <div className="px-3 py-1.5 rounded-xl bg-[#F0F3FA] border border-[#2F6BFF]/20 flex items-center gap-2 text-[12px] text-[#2F6BFF]">
+            <span className="font-bold font-mono">DEMO</span>
+            <span className="text-[#64748B]">• Simulated funds • No real crypto required</span>
+          </div>
+        )}
       </div>
 
       <div className="space-y-4 my-6">
-        {/* Deposit Summary Box */}
-        <div className="bg-white rounded-3xl p-6 border border-[#E2E7F0] space-y-4 shadow-sm text-center">
-          <div className="text-[12px] font-semibold text-[#64748B] uppercase tracking-wider">
-            Deposit Amount
+        {fundingState === 'CONFIRMED' ? (
+          <div className="bg-[#090B10] text-white rounded-3xl p-6 text-center space-y-4 shadow-xl relative overflow-hidden">
+            <div className="w-14 h-14 rounded-2xl bg-[#00B074]/20 text-[#00B074] flex items-center justify-center mx-auto">
+              <CheckCircle2 className="w-8 h-8" />
+            </div>
+            <div>
+              <div className="text-[12px] font-mono uppercase text-[#3AC8FF] tracking-wider">AI Wallet Funded</div>
+              <div className="text-[32px] font-black text-white font-headline mt-1">
+                {formatUsd(capital, 0, 0)}
+              </div>
+            </div>
+            <p className="text-[13px] text-white/70 max-w-xs mx-auto">
+              Your AI Autopilot is primed to monitor liquidity pools and compound yields toward Level 1 ({formatUsd(target, 0, 0)}).
+            </p>
           </div>
-          <div className="text-[40px] font-black text-[#11141C] font-headline">
-            {formatUsd(capital)}
-          </div>
+        ) : (
+          <div className="bg-white rounded-3xl p-6 border border-[#E2E7F0] space-y-4 shadow-sm text-center">
+            <div className="text-[12px] font-semibold text-[#64748B] uppercase tracking-wider">
+              Starting Capital
+            </div>
+            <div className="text-[40px] font-black text-[#11141C] font-headline">
+              {formatUsd(capital, 0, 0)}
+            </div>
 
-          <div className="flex items-center justify-center gap-2 pt-2">
-            <button
-              onClick={() => setSelectedAsset('USDT')}
-              className={`px-4 py-2 rounded-xl text-[13px] font-bold transition-all cursor-pointer ${
-                selectedAsset === 'USDT'
-                  ? 'bg-[#00B074] text-white shadow-sm'
-                  : 'bg-[#F0F3FA] text-[#64748B] hover:text-[#11141C]'
-              }`}
-            >
-              USDT (Native TON)
-            </button>
-            <button
-              onClick={() => setSelectedAsset('TON')}
-              className={`px-4 py-2 rounded-xl text-[13px] font-bold transition-all cursor-pointer ${
-                selectedAsset === 'TON'
-                  ? 'bg-[#2F6BFF] text-white shadow-sm'
-                  : 'bg-[#F0F3FA] text-[#64748B] hover:text-[#11141C]'
-              }`}
-            >
-              TON Coin
-            </button>
-          </div>
+            <div className="flex items-center justify-center gap-2 pt-2">
+              <button
+                onClick={() => setSelectedAsset('USDT')}
+                className={`px-4 py-2 rounded-xl text-[13px] font-bold transition-all cursor-pointer ${
+                  selectedAsset === 'USDT'
+                    ? 'bg-[#00B074] text-white shadow-sm'
+                    : 'bg-[#F0F3FA] text-[#64748B] hover:text-[#11141C]'
+                }`}
+              >
+                USDT
+              </button>
+              <button
+                onClick={() => setSelectedAsset('TON')}
+                className={`px-4 py-2 rounded-xl text-[13px] font-bold transition-all cursor-pointer ${
+                  selectedAsset === 'TON'
+                    ? 'bg-[#2F6BFF] text-white shadow-sm'
+                    : 'bg-[#F0F3FA] text-[#64748B] hover:text-[#11141C]'
+                }`}
+              >
+                TON
+              </button>
+            </div>
 
-          <div className="pt-4 border-t border-[#F1F5F9] space-y-2 text-[12px] text-left">
-            <div className="flex justify-between">
-              <span className="text-[#64748B]">Destination:</span>
-              <span className="font-mono font-semibold text-[#11141C]">{wallet.subWalletAddress} (Sub-Wallet)</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-[#64748B]">Target Goal:</span>
-              <span className="font-mono font-semibold text-[#2F6BFF]">{formatUsd(target)} (Level 1)</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-[#64748B]">Network Fee:</span>
-              <span className="font-mono text-[#00B074]">&lt; 0.005 TON (~$0.02)</span>
+            <div className="pt-4 border-t border-[#F1F5F9] space-y-2.5 text-[12px] text-left">
+              <div className="flex justify-between">
+                <span className="text-[#64748B]">Destination:</span>
+                <span className="font-mono font-semibold text-[#11141C]">{wallet.subWalletAddress} (AI Wallet)</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#64748B]">First Milestone:</span>
+                <span className="font-mono font-semibold text-[#2F6BFF]">{formatUsd(target, 0, 0)} (Level 1)</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#64748B]">Non-Custodial:</span>
+                <span className="font-medium text-[#00B074]">Revocable anytime</span>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div className="space-y-3">
-        <PrimaryButton
-          size="lg"
-          onClick={handleFund}
-          disabled={isFunding}
-          icon={isFunding ? undefined : <Sparkles className="w-4 h-4" />}
-        >
-          {isFunding ? 'Confirming On-Chain Transfer...' : `Deposit ${formatUsd(capital)} & Launch Autopilot`}
-        </PrimaryButton>
+        {fundingState === 'CONFIRMED' ? (
+          <PrimaryButton
+            size="lg"
+            onClick={handleStartAutopilot}
+            icon={<Sparkles className="w-4 h-4" />}
+          >
+            Start Autopilot
+          </PrimaryButton>
+        ) : (
+          <PrimaryButton
+            size="lg"
+            onClick={handleFund}
+            disabled={fundingState === 'SIMULATING'}
+            icon={fundingState === 'SIMULATING' ? undefined : <Sparkles className="w-4 h-4" />}
+          >
+            {fundingState === 'SIMULATING' ? 'Simulating wallet funding...' : `Fund AI Wallet (${formatUsd(capital, 0, 0)})`}
+          </PrimaryButton>
+        )}
 
         <p className="text-[11px] text-center text-[#64748B]">
-          Signing this transaction approves isolated sub-wallet custody only.
+          AI only manages the funded balance in your AI Wallet. Pause or withdraw anytime.
         </p>
       </div>
     </div>

@@ -1,15 +1,29 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Bot, DollarSign, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ShieldAlert } from 'lucide-react';
 import { PrimaryButton } from '../components/ui/PrimaryButton';
-import { SecondaryButton } from '../components/ui/SecondaryButton';
 import { formatUsd } from '../utils/formatters';
 
 export const OnboardingCapitalPage: React.FC = () => {
   const navigate = useNavigate();
   const [selectedCapital, setSelectedCapital] = useState<number>(100);
+  const [customVal, setCustomVal] = useState<string>('');
+  const [isCustom, setIsCustom] = useState<boolean>(false);
 
-  const presets = [50, 100, 250, 500];
+  const presets = [30, 100, 300];
+
+  const handleSelectPreset = (amount: number) => {
+    setIsCustom(false);
+    setSelectedCapital(amount);
+  };
+
+  const handleCustomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = parseFloat(e.target.value);
+    setCustomVal(e.target.value);
+    if (!isNaN(val) && val > 0) {
+      setSelectedCapital(val);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#F9F9FF] text-[#11141C] flex flex-col justify-between p-4 sm:p-6 max-w-lg mx-auto">
@@ -22,16 +36,16 @@ export const OnboardingCapitalPage: React.FC = () => {
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
-          <span className="text-[12px] font-mono text-[#64748B]">Step 1 of 4: Capital</span>
+          <span className="text-[12px] font-mono text-[#64748B]">Step 1 of 4</span>
           <div className="w-9" />
         </div>
 
         <div>
-          <h1 className="text-[24px] font-extrabold text-[#11141C] font-headline tracking-tight">
-            Select Starting Capital
+          <h1 className="text-[24px] sm:text-[26px] font-extrabold text-[#11141C] font-headline tracking-tight">
+            How much should your AI start with?
           </h1>
           <p className="text-[14px] text-[#64748B] mt-1">
-            Choose how much capital to assign to your isolated autonomous agent.
+            Choose an amount you are comfortable putting at risk.
           </p>
         </div>
       </div>
@@ -42,42 +56,66 @@ export const OnboardingCapitalPage: React.FC = () => {
           {presets.map((amount) => (
             <button
               key={amount}
-              onClick={() => setSelectedCapital(amount)}
+              onClick={() => handleSelectPreset(amount)}
               className={`p-4 rounded-2xl border text-left transition-all cursor-pointer relative ${
-                selectedCapital === amount
+                !isCustom && selectedCapital === amount
                   ? 'bg-white border-[#2F6BFF] ring-2 ring-[#2F6BFF]/15 shadow-sm'
                   : 'bg-white border-[#E2E7F0] hover:border-[#CBD5E1]'
               }`}
             >
               {amount === 100 && (
-                <span className="absolute top-2 right-2 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#00B074]/15 text-[#00B074]">
+                <span className="absolute top-2.5 right-2.5 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#00B074]/15 text-[#00B074]">
                   Recommended
                 </span>
               )}
-              <div className="text-[12px] text-[#64748B]">Initial Principal</div>
+              <div className="text-[12px] text-[#64748B]">Starting Capital</div>
               <div className="text-[24px] font-extrabold text-[#11141C] font-mono mt-1">
                 {formatUsd(amount, 0, 0)}
               </div>
             </button>
           ))}
+
+          {/* Custom Amount Button/Input */}
+          <div
+            onClick={() => setIsCustom(true)}
+            className={`p-4 rounded-2xl border text-left transition-all cursor-pointer relative ${
+              isCustom
+                ? 'bg-white border-[#2F6BFF] ring-2 ring-[#2F6BFF]/15 shadow-sm'
+                : 'bg-white border-[#E2E7F0] hover:border-[#CBD5E1]'
+            }`}
+          >
+            <div className="text-[12px] text-[#64748B]">Custom Amount</div>
+            {isCustom ? (
+              <div className="flex items-center mt-1">
+                <span className="text-[18px] font-extrabold font-mono text-[#11141C] mr-1">$</span>
+                <input
+                  type="number"
+                  autoFocus
+                  value={customVal}
+                  onChange={handleCustomChange}
+                  placeholder="500"
+                  className="w-full text-[20px] font-extrabold text-[#11141C] font-mono bg-transparent outline-none"
+                />
+              </div>
+            ) : (
+              <div className="text-[20px] font-extrabold text-[#64748B] font-mono mt-1">
+                Custom...
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Breakdown preview */}
-        <div className="bg-white rounded-2xl p-4 border border-[#E2E7F0] space-y-2.5 text-[13px]">
-          <div className="text-[12px] font-semibold text-[#64748B] uppercase tracking-wider">
-            Agent Execution Plan
+        {/* Clean Summary */}
+        <div className="bg-white rounded-2xl p-4 border border-[#E2E7F0] space-y-1 text-[13px]">
+          <div className="flex justify-between items-center">
+            <span className="text-[#64748B]">Starting capital:</span>
+            <span className="font-bold text-[#11141C] font-mono text-[16px]">
+              {formatUsd(selectedCapital, 0, 0)}
+            </span>
           </div>
-          <div className="flex justify-between py-1 border-b border-[#F1F5F9]">
-            <span className="text-[#64748B]">Reserve Buffer (42%)</span>
-            <span className="font-semibold text-[#11141C] font-mono">{formatUsd(selectedCapital * 0.42)}</span>
-          </div>
-          <div className="flex justify-between py-1 border-b border-[#F1F5F9]">
-            <span className="text-[#64748B]">Yield Harvesting (33%)</span>
-            <span className="font-semibold text-[#00B074] font-mono">{formatUsd(selectedCapital * 0.33)}</span>
-          </div>
-          <div className="flex justify-between py-1">
-            <span className="text-[#64748B]">Opportunistic Growth (25%)</span>
-            <span className="font-semibold text-[#F59E0B] font-mono">{formatUsd(selectedCapital * 0.25)}</span>
+          <div className="flex justify-between items-center text-[12px]">
+            <span className="text-[#64748B]">Next step:</span>
+            <span className="text-[#2F6BFF] font-medium">Choose your first milestone</span>
           </div>
         </div>
       </div>
@@ -95,9 +133,9 @@ export const OnboardingCapitalPage: React.FC = () => {
           Continue with {formatUsd(selectedCapital, 0, 0)}
         </PrimaryButton>
 
-        <p className="text-[11px] text-center text-[#64748B] flex items-center justify-center gap-1">
-          <ShieldCheck className="w-3.5 h-3.5 text-[#00B074]" />
-          Funds remain in your isolated non-custodial smart contract.
+        <p className="text-[11px] text-center text-[#94A3B8] flex items-center justify-center gap-1.5 px-4 leading-normal">
+          <ShieldAlert className="w-3.5 h-3.5 text-[#94A3B8] shrink-0" />
+          <span>Digital assets can lose value. Start with an amount you are comfortable risking.</span>
         </p>
       </div>
     </div>

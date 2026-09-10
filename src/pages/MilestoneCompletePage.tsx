@@ -8,14 +8,17 @@ import { formatUsd } from '../utils/formatters';
 
 export const MilestoneCompletePage: React.FC = () => {
   const navigate = useNavigate();
-  const { goal, portfolio, setProfitPreference, setAiMode } = useAppStore();
+  const { goal, portfolio, setProfitPreference, setAiMode, advanceMilestone } = useAppStore();
   const [selectedAction, setSelectedAction] = useState<
     'CONTINUE' | 'TAKE_PROFIT' | 'SPLIT'
   >('CONTINUE');
   const [isConfirmed, setIsConfirmed] = useState(false);
 
+  const nextTarget = goal.targetNav * 3;
+
   const handleConfirm = () => {
     if (selectedAction === 'CONTINUE') {
+      advanceMilestone();
       setProfitPreference('COMPOUND_ALL');
       setAiMode('GROW');
     } else if (selectedAction === 'TAKE_PROFIT') {
@@ -27,7 +30,7 @@ export const MilestoneCompletePage: React.FC = () => {
     setIsConfirmed(true);
     setTimeout(() => {
       navigate('/app');
-    }, 1200);
+    }, 800);
   };
 
   return (
@@ -42,15 +45,14 @@ export const MilestoneCompletePage: React.FC = () => {
         </div>
 
         <div>
-          <span className="text-[12px] font-mono text-[#2F6BFF] uppercase tracking-wider font-semibold">
-            Milestone 1 Completed
+          <span className="text-[12px] font-mono text-[#00B074] uppercase tracking-wider font-bold">
+            Milestone Reached • Level {goal.currentLevel}
           </span>
           <h1 className="text-[28px] font-black text-[#11141C] font-headline tracking-tight mt-1">
-            Target Reached!
+            {formatUsd(goal.targetNav, 0, 0)}
           </h1>
           <p className="text-[14px] text-[#64748B] mt-1 max-w-xs mx-auto">
-            Your portfolio successfully grew from {formatUsd(portfolio.startingCapital)} to{' '}
-            <strong className="text-[#11141C]">{formatUsd(goal.targetNav)}</strong>.
+            Your AI completed Level {goal.currentLevel}. Choose how your autonomous agent proceeds.
           </p>
         </div>
 
@@ -66,13 +68,13 @@ export const MilestoneCompletePage: React.FC = () => {
           >
             <div>
               <div className="text-[14px] font-bold text-[#11141C] flex items-center gap-2">
-                <span>Continue Growing</span>
+                <span>Continue growing</span>
                 <span className="text-[10px] bg-[#2F6BFF]/10 text-[#2F6BFF] px-2 py-0.5 rounded-full font-bold">
-                  Next: $900
+                  Next: {formatUsd(nextTarget, 0, 0)}
                 </span>
               </div>
               <div className="text-[12px] text-[#64748B] mt-0.5">
-                Automatically roll 100% of profit into Level 2 trajectory.
+                Roll capital and captured profits into Level {goal.currentLevel + 1} trajectory.
               </div>
             </div>
             <div
@@ -94,10 +96,10 @@ export const MilestoneCompletePage: React.FC = () => {
           >
             <div>
               <div className="text-[14px] font-bold text-[#11141C]">
-                Take Some Profit
+                Take some profit
               </div>
               <div className="text-[12px] text-[#64748B] mt-0.5">
-                Lock profit gains into safe USDT floor; compound original capital.
+                Route profit gains to USDT reserve floor; keep baseline capital working.
               </div>
             </div>
             <div
@@ -119,10 +121,10 @@ export const MilestoneCompletePage: React.FC = () => {
           >
             <div>
               <div className="text-[14px] font-bold text-[#11141C]">
-                Split Profit 50/50
+                Split profit
               </div>
               <div className="text-[12px] text-[#64748B] mt-0.5">
-                50% preserved in safe floor, 50% accelerated towards Level 2.
+                50% preserved in safe reserve, 50% continuing toward {formatUsd(nextTarget, 0, 0)}.
               </div>
             </div>
             <div
@@ -143,7 +145,7 @@ export const MilestoneCompletePage: React.FC = () => {
           disabled={isConfirmed}
           icon={<Sparkles className="w-4 h-4" />}
         >
-          {isConfirmed ? 'Updating Agent Mandate...' : 'Confirm Next Phase'}
+          {isConfirmed ? 'Updating Agent...' : 'Confirm Next Phase'}
         </PrimaryButton>
 
         <SecondaryButton size="md" onClick={() => navigate('/app')}>
