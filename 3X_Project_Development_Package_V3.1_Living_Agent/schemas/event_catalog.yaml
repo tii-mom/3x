@@ -1,0 +1,46 @@
+version: v3.1
+categories:
+  agent:
+    - agent.claimed
+    - agent.activation_prepared
+    - agent.activated
+    - agent.state_changed
+    - agent.evolved
+  economy:
+    - generation.assigned
+    - seed.entitled
+    - seed.spent
+    - earnings.qualified
+    - growth.stage_eligible
+    - growth.claimed
+    - energy.allocated
+    - energy.consumed
+  intelligence:
+    - opportunity.detected
+    - value_router.evaluated
+    - circuit.activated
+    - decision.created
+    - trace.completed
+    - learning.updated
+  risk:
+    - risk.approved
+    - risk.denied
+    - risk.review_required
+  execution:
+    - execution.created
+    - execution.quoted
+    - execution.simulated
+    - execution.signed
+    - execution.broadcast
+    - execution.confirmed
+    - execution.failed
+    - execution.reconcile_required
+  skill:
+    - skill.acquired
+    - skill.learned
+    - skill.replaced
+    - skill.certified
+  security:
+    - security.agent_paused
+    - security.operator_revoked
+    - security.signer_paused

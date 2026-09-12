@@ -1,0 +1,27 @@
+version: v3.1-beta
+reference_total_supply: 1000000000
+parameters:
+  outer_ai_economy_pct: { value: 0.80, status: FROZEN_FOR_BETA }
+  outer_team_pct: { value: 0.10, status: FROZEN_FOR_BETA }
+  outer_lp_pct: { value: 0.05, status: FROZEN_FOR_BETA }
+  outer_community_pct: { value: 0.05, status: FROZEN_FOR_BETA }
+  seed_cap_pct: { value: 0.04, status: BETA_CALIBRATED }
+  growth_cap_pct: { value: 0.60, status: BETA_CALIBRATED }
+  demand_cap_pct: { value: 0.16, status: BETA_CALIBRATED }
+  genesis_capacity: { value: 1000, status: FROZEN_FOR_BETA }
+  generation_count: { value: 8, status: FROZEN_FOR_BETA }
+  genesis_seed_3x: { value: 5000, status: BETA_CALIBRATED }
+  genesis_growth_vault_3x: { value: 75000, status: BETA_CALIBRATED }
+  stage_release:
+    value: { "3X": 0.10, "9X": 0.15, "27X": 0.20, "81X": 0.25, "243X": 0.30 }
+    status: BETA_CALIBRATED
+  initial_runway_days: { value: 365, status: BETA_CALIBRATED }
+  stage_extension_days: { value: 180, status: BETA_CALIBRATED }
+  max_runway_days: { value: 730, status: BETA_CALIBRATED }
+  team_burn_alpha: { value: 0.50, status: BETA_CALIBRATED }
+  demand_emission_k: { value: 0.10, status: BETA_CALIBRATED }
+  lp_yellow_ratio: { value: 0.15, status: BETA_CALIBRATED }
+  lp_red_ratio: { value: 0.25, status: BETA_CALIBRATED }
+  total_supply_final: { value: null, status: POST_BETA_ONLY }
+  tge_price: { value: null, status: POST_BETA_ONLY }
+  mainnet_lp_usd_depth: { value: null, status: POST_BETA_ONLY }

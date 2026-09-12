@@ -1,0 +1,191 @@
+openapi: 3.1.0
+info:
+  title: 3X V3.1 API
+  version: 0.1.0-beta
+servers:
+  - url: https://api.example.com/v1
+paths:
+  /agents/claim:
+    post:
+      summary: Claim a free demo agent without wallet requirement
+      operationId: claimAgent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string, minLength: 1, maxLength: 32 }
+                avatarKey: { type: string }
+      responses:
+        '201':
+          description: Agent claimed
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AgentHome' }
+  /agents/{agentId}/home:
+    get:
+      operationId: getAgentHome
+      parameters:
+        - $ref: '#/components/parameters/AgentId'
+      responses:
+        '200':
+          description: Home read model
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AgentHome' }
+  /agents/{agentId}/activation/prepare:
+    post:
+      operationId: prepareActivation
+      parameters: [ { $ref: '#/components/parameters/AgentId' } ]
+      responses:
+        '200':
+          description: Testnet activation payload/fee estimate
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [environment, networkFeeEstimate, request]
+                properties:
+                  environment: { type: string, enum: [testnet] }
+                  networkFeeEstimate: { type: string }
+                  request: { type: object, additionalProperties: true }
+  /agents/{agentId}/activation/confirm:
+    post:
+      operationId: confirmActivation
+      parameters: [ { $ref: '#/components/parameters/AgentId' } ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [txHash]
+              properties: { txHash: { type: string } }
+      responses: { '200': { description: Activation confirmed } }
+  /agents/{agentId}/skills:
+    get:
+      operationId: getAgentSkills
+      parameters: [ { $ref: '#/components/parameters/AgentId' } ]
+      responses: { '200': { description: Skill inventory } }
+  /agents/{agentId}/skills/{skillInstanceId}/learn:
+    post:
+      operationId: learnSkill
+      parameters:
+        - $ref: '#/components/parameters/AgentId'
+        - name: skillInstanceId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses: { '200': { description: Bound skill and updated circuit } }
+  /agents/{agentId}/energy:
+    get:
+      operationId: getEnergy
+      parameters: [ { $ref: '#/components/parameters/AgentId' } ]
+      responses: { '200': { description: Energy state } }
+  /energy/quote:
+    post:
+      operationId: quoteEnergy
+      responses: { '200': { description: Cost-anchored energy quote } }
+  /agents/{agentId}/activity:
+    get:
+      operationId: getActivity
+      parameters: [ { $ref: '#/components/parameters/AgentId' } ]
+      responses: { '200': { description: Activity feed } }
+  /agents/{agentId}/traces:
+    get:
+      operationId: listTraces
+      parameters: [ { $ref: '#/components/parameters/AgentId' } ]
+      responses: { '200': { description: Trace list } }
+  /traces/{traceId}:
+    get:
+      operationId: getTrace
+      parameters:
+        - name: traceId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: User-safe trace
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DecisionTrace' }
+  /agents/{agentId}/growth:
+    get:
+      operationId: getGrowth
+      parameters: [ { $ref: '#/components/parameters/AgentId' } ]
+      responses: { '200': { description: Growth state } }
+  /agents/{agentId}/growth/{stage}/claim/prepare:
+    post:
+      operationId: prepareGrowthClaim
+      parameters:
+        - $ref: '#/components/parameters/AgentId'
+        - name: stage
+          in: path
+          required: true
+          schema: { type: string, enum: [3X, 9X, 27X, 81X, 243X] }
+      responses: { '200': { description: Signed Testnet claim data } }
+  /skills/catalog:
+    get:
+      operationId: getSkillCatalog
+      responses: { '200': { description: Platform-issued skills } }
+components:
+  parameters:
+    AgentId:
+      name: agentId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+  schemas:
+    AgentHome:
+      type: object
+      required: [environment, agent, today, energy, growth]
+      properties:
+        environment: { type: string, enum: [simulation, testnet, mainnet] }
+        agent:
+          type: object
+          required: [id, name, state, level]
+          properties:
+            id: { type: string }
+            name: { type: string }
+            state: { type: string }
+            level: { type: string }
+            generation: { type: string }
+        today:
+          type: object
+          properties:
+            earnedBaseUnits: { type: string }
+            spentBaseUnits: { type: string }
+            netBaseUnits: { type: string }
+            asset: { type: string }
+        energy:
+          type: object
+          properties:
+            basePct: { type: number }
+            premiumPct: { type: number }
+        growth:
+          type: object
+          properties:
+            multiple: { type: number }
+            nextStage: { type: string }
+        currentTrace: { $ref: '#/components/schemas/DecisionTrace' }
+    DecisionTrace:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        expectedNetValueUsd: { type: number }
+        premiumEnergyBudget: { type: number }
+        steps:
+          type: array
+          items:
+            type: object
+            properties:
+              seq: { type: integer }
+              circuitId: { type: string }
+              label: { type: string }
+              state: { type: string }
+              energyCost: { type: number }
+              summary: { type: string }

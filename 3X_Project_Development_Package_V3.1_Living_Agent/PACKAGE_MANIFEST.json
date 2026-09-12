@@ -1,0 +1,221 @@
+{
+  "package": "3X_Project_Development_Package_V3.1_Living_Agent",
+  "version": "3.1.0",
+  "files": [
+    {
+      "path": "00_AI_START_HERE.md",
+      "size": 5253,
+      "sha256": "cf899cc6e460ba0610f76e8f28ca41b8602a90fcb5c38fedd03de1acd7b21004"
+    },
+    {
+      "path": "01_EXECUTIVE_PRODUCT_SPEC.md",
+      "size": 5176,
+      "sha256": "615df71a9ded5f05a10d950fb5845b8664acf16c6d9e41ad3b75d38172c4cefc"
+    },
+    {
+      "path": "02_USER_JOURNEY_AND_UX.md",
+      "size": 5253,
+      "sha256": "7e88b5ae4dad84ee8a09a808d5ea933f2772880fcece21236e4d19e0ae96b7e4"
+    },
+    {
+      "path": "03_TOKENOMICS_AND_ECONOMIC_RULES.md",
+      "size": 6658,
+      "sha256": "29289d0828114aa4d1eb271a5051f24df2d56d1a1b4b71e33aa8b868e9e1dde7"
+    },
+    {
+      "path": "04_AGENT_CONNECTOME_AND_VALUE_ROUTER.md",
+      "size": 5179,
+      "sha256": "e47e6cc78f4187ec4ca033ea6375329b4e525008c5b6c562cd68d44720be9763"
+    },
+    {
+      "path": "05_SKILL_AND_ENERGY_SYSTEM.md",
+      "size": 2956,
+      "sha256": "8e6715749a60eebeb560a223d8f3cf0f435893297ab80194208b3827f62d6914"
+    },
+    {
+      "path": "06_TECHNICAL_ARCHITECTURE.md",
+      "size": 4399,
+      "sha256": "d3f64b68647ea0fd342a9445ffc8ebe2f47ca2619fff2b96311c60d8cccf4573"
+    },
+    {
+      "path": "07_SMART_CONTRACT_SPEC.md",
+      "size": 3376,
+      "sha256": "305d99574cec1c39f538a2fa2ab4c046d9fb2cd360c7c3752d97477afc26bffd"
+    },
+    {
+      "path": "08_BACKEND_AND_LEDGER_SPEC.md",
+      "size": 3880,
+      "sha256": "b1af0b5a376aa83e956f106916db543f631cac419df6df2ae2ecd16bbc478ed3"
+    },
+    {
+      "path": "09_FRONTEND_CLEAN_REWRITE_SPEC.md",
+      "size": 3835,
+      "sha256": "6363fdbad67c81724fdf34491788a79034d6728a23723f8313c17fa22865992a"
+    },
+    {
+      "path": "10_DATA_API_EVENT_SPEC.md",
+      "size": 3111,
+      "sha256": "70ffc90f6f6a37f469f2d1aa528dfb6639cbf80b15ed400b4b85e27ba2321d81"
+    },
+    {
+      "path": "11_SECURITY_THREAT_MODEL.md",
+      "size": 3136,
+      "sha256": "3542b2d380c845d5cbb31d6a7663227b1054c55b37db23a6bd16cffa02728074"
+    },
+    {
+      "path": "12_TESTNET_BETA_AND_ANALYTICS.md",
+      "size": 2941,
+      "sha256": "cb2c55eee84e787dd943faabd1faa90790bd33b2ce061e92eec7764b77a56426"
+    },
+    {
+      "path": "13_ACCEPTANCE_CRITERIA.md",
+      "size": 2590,
+      "sha256": "280a5c1c46eea193eb65eda07740dd554d35478cac6c26dd89e9e83df917cf32"
+    },
+    {
+      "path": "14_DEVELOPMENT_ROADMAP.md",
+      "size": 2151,
+      "sha256": "d6923f1e9d4ecb8768d2e033793983f1e3af1d01e892c70177a2ebe950754540"
+    },
+    {
+      "path": "15_NARRATIVE_AND_GROWTH.md",
+      "size": 1651,
+      "sha256": "9507c3ccf497bc973c173f635269b67fefd9baad28aae1f92ea1c6d80bb8b442"
+    },
+    {
+      "path": "16_3X_LABS_MALECNS.md",
+      "size": 2144,
+      "sha256": "44d1ba8200d8a03458cc9343259ece499a49a37313aba41a72746f0756b673a1"
+    },
+    {
+      "path": "17_OPEN_DECISIONS_AND_PARAMETER_REGISTRY.md",
+      "size": 1444,
+      "sha256": "e9c0f4c7103798f6d55bf54c00fb8885a37d0a35c1065d7c54399a6eadf66738"
+    },
+    {
+      "path": "18_REPO_REUSE_MATRIX.md",
+      "size": 1449,
+      "sha256": "fa59079d5d4c5da272f8f9710a72a22ab9356554d7e022be85130a7c114b826b"
+    },
+    {
+      "path": "19_RELEASE_CHECKLIST.md",
+      "size": 1013,
+      "sha256": "3e1ce3fc2387c3a996f52f952a0fb4621d38be54d2dd2f7e429a9c1f73dfa3f6"
+    },
+    {
+      "path": "3X_Project_Master_Development_Spec_V3.1_Living_Agent.md",
+      "size": 67990,
+      "sha256": "e07161a71849a59146f78f9b322050ef5b5af9f4fa2d658c0ba2a998acbb03e8"
+    },
+    {
+      "path": "99_CHANGELOG_FROM_V3.0.md",
+      "size": 968,
+      "sha256": "30ef9eebf6c77ad28d1e78f30e12bd9009f6c9acf8fb8fd56ce83d981652e6e2"
+    },
+    {
+      "path": "AI_IMPLEMENTATION_CHECKLIST.md",
+      "size": 715,
+      "sha256": "59bb281c04e7464c71489b0b9fabe9c138734ea0876f6be9250f383de7b138db"
+    },
+    {
+      "path": "README.md",
+      "size": 2726,
+      "sha256": "4ad2e49c0000cea468a99a7c74b67754442f1c2eef4187fb6143bafcd6321099"
+    },
+    {
+      "path": "VERSION",
+      "size": 40,
+      "sha256": "4eff70833fa3697a358f433b0b82ba7254d54b1a67a13acbd500a5a219f4cd2e"
+    },
+    {
+      "path": "ai_studio/00_IMPLEMENTATION_MANIFEST.md",
+      "size": 1596,
+      "sha256": "1c9e275fe27875ee4dc7998bb9e73489174264658ebba7322471e4b82ecd2685"
+    },
+    {
+      "path": "ai_studio/01_PROMPT_PRODUCT_SHELL.md",
+      "size": 1028,
+      "sha256": "b09a8ade22cad8a00dc3083717d6ee77ebfadd83880729f39397d9ef27549bb1"
+    },
+    {
+      "path": "ai_studio/02_PROMPT_DOMAIN_ENGINE.md",
+      "size": 746,
+      "sha256": "570e9ec26e70351e4dc0a4fb6d09ef1560fbec30e3b4d69545604ff54f0e8629"
+    },
+    {
+      "path": "ai_studio/03_PROMPT_TON_TESTNET.md",
+      "size": 632,
+      "sha256": "ac0898a80cf3ec924023f387b7993726f58a28ba0b00c685253f4e0a96ddc504"
+    },
+    {
+      "path": "ai_studio/04_PROMPT_ECONOMIC_BACKEND.md",
+      "size": 732,
+      "sha256": "9b102911ff7e719dc9dcdeba0111530e49a5466805ac4cb0b0d6738cbea44b48"
+    },
+    {
+      "path": "ai_studio/05_PROMPT_BETA_INSTRUMENTATION.md",
+      "size": 489,
+      "sha256": "d4624fc551f2fb29cc12d3114070b382f20b60599037ad0ce9e3f7ce4c20d6c4"
+    },
+    {
+      "path": "configs/feature_flags.json",
+      "size": 295,
+      "sha256": "5f398d5a7fd7e5904306c43e8c51880cfc832032583e92ec22666ef87376d373"
+    },
+    {
+      "path": "configs/mock_agent_fixture.json",
+      "size": 1191,
+      "sha256": "f98f743819389a918d8f0a2888b3b973c010ce808706dbf150be791d04a7b5e3"
+    },
+    {
+      "path": "configs/parameter_registry.yaml",
+      "size": 1461,
+      "sha256": "35929d4423b255f6d73fc9e7ed0369c0fcc7879e00da672ff092df087640cc27"
+    },
+    {
+      "path": "ops/TESTNET_RUNBOOK.md",
+      "size": 804,
+      "sha256": "253ef2f3fbf3f95a073bf8e434c422d835eaa6cac9847aae80f79a8d55a46ba6"
+    },
+    {
+      "path": "research/LIVING_BRAIN_RESEARCH_SUMMARY.md",
+      "size": 1089,
+      "sha256": "77cb97aef675889ccf94e1cb73026ce551cc3b80665659ec937d29bdf7b4206b"
+    },
+    {
+      "path": "schemas/db_schema.sql",
+      "size": 7212,
+      "sha256": "9ab9cfb42ce170d529968a091659a396f6603f630bf4b6e433c3e5455fd331b7"
+    },
+    {
+      "path": "schemas/event_catalog.yaml",
+      "size": 998,
+      "sha256": "f5614b57c7f95954a96877d6081bde62c980a5f637a1204dd850719982f76958"
+    },
+    {
+      "path": "schemas/openapi.yaml",
+      "size": 6191,
+      "sha256": "e3a944c473b33cefa220135d3c9c41aad912f46d396ec0af4b2aa62e8e0451e2"
+    },
+    {
+      "path": "simulation/3X_Tokenomics_V1.1_Beta_Model.xlsx",
+      "size": 11848,
+      "sha256": "d62bf7eaf8674103a03c97b53ee2641b809a0892fb54cc363154934c93df18fb"
+    },
+    {
+      "path": "simulation/generation_schedule_v3.1.csv",
+      "size": 406,
+      "sha256": "9611cc163723957baa705315251a125b00eccd8eb6ce1c77b88b44336be8f58a"
+    },
+    {
+      "path": "simulation/monte_carlo_1m_base.json",
+      "size": 831,
+      "sha256": "5727f7ea407efd79150d3287dda3f1eb34bece7aa0d14799d2cdce78396e2f69"
+    },
+    {
+      "path": "simulation/scale_scenario_summary.csv",
+      "size": 6757,
+      "sha256": "ae649b10e59755d85ffeaed7bafff3ae341a3d20b905d5396255eabf5b8791da"
+    }
+  ]
+}

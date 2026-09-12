@@ -1,0 +1,12 @@
+{
+  "V3_PRODUCT_UI": true,
+  "TON_TESTNET_ACTIVATION": false,
+  "PREMIUM_ENERGY_PURCHASE": false,
+  "GROWTH_CLAIM_TESTNET": false,
+  "EXTERNAL_TASKS": false,
+  "ADVANCED_SKILLS": false,
+  "MULTI_AI": false,
+  "MALECNS_LABS": false,
+  "MAINNET_EXECUTION": false,
+  "PAID_RANDOM_CAPSULE": false
+}

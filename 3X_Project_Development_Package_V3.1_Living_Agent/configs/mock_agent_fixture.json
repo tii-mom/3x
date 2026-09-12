@@ -1,0 +1,30 @@
+{
+  "environment": "simulation",
+  "agent": {
+    "id": "agt_momo_demo",
+    "name": "MOMO",
+    "primary": true,
+    "generation": "GENESIS",
+    "level": "1X_HATCHLING",
+    "state": "WORKING",
+    "statusLabel": "Working",
+    "qualifiedGrowthMultiple": 2.71,
+    "nextMilestone": 3,
+    "energy": { "basePct": 100, "premiumPct": 82, "dailyBudget": 20, "usedToday": 3.1 },
+    "today": { "earned": 128, "spent": 21, "net": 107, "asset": "DEMO_3X" },
+    "skills": [
+      { "id": "task_hunter", "name": "Task Hunter", "tier": "COMMON", "bound": true },
+      { "id": "value_hunter", "name": "Value Hunter", "tier": "COMMON", "bound": true }
+    ]
+  },
+  "currentTrace": {
+    "id": "trace_demo_001",
+    "title": "Evaluating a task",
+    "steps": [
+      { "id": "s1", "node": "Task Sense", "state": "completed", "summary": "Detected a new task" },
+      { "id": "s2", "node": "Value Hunter", "state": "completed", "summary": "Expected net value is positive", "energyCost": 0.2 },
+      { "id": "s3", "node": "Risk Guardian", "state": "completed", "summary": "Risk checks passed" },
+      { "id": "s4", "node": "Execute", "state": "active", "summary": "Working on the task" }
+    ]
+  }
+}
