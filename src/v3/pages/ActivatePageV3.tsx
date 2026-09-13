@@ -202,7 +202,7 @@ export const ActivatePageV3: React.FC = () => {
 
       {/* Footer */}
       <footer className="max-w-lg w-full mx-auto px-6 py-6 text-center text-xs text-slate-400">
-        TON Testnet environment • All smart contracts run on testnet test tokens
+        TON Testnet / Devnet environment • Smart contracts written in Tolk • MAINNET_EXECUTION is strictly false
       </footer>
     </div>
   );
