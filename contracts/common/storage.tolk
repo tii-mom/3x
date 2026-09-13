@@ -53,10 +53,10 @@ struct (0x00) OnchainMetadataReply {
 struct AiReserveBucketCaps {
     seedCap: coins
     seedReleased: coins
-    computeCap: coins
-    computeReleased: coins
-    ecosystemCap: coins
-    ecosystemReleased: coins
+    growthCap: coins
+    growthReleased: coins
+    demandCap: coins
+    demandReleased: coins
 }
 
 struct AiReserveConfig {

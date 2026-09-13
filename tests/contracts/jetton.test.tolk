@@ -76,7 +76,7 @@ get fun `test mint by unauthorized sender fails with NotAuthorized`() {
 
 get fun `test mint exceeding maxSupply fails with MaxSupplyExceeded`() {
     val (minter, admin, user) = setupJettonTest();
-    val excessiveAmount = MAX_3X_SUPPLY + 1;
+    val excessiveAmount = TEST_REFERENCE_SUPPLY + 1;
 
     val forwardPayload = beginCell().storeMaybeRef(null).endCell().beginParse();
 

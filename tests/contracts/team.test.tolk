@@ -7,9 +7,10 @@ import "@wrappers/TeamUnlockVault.gen"
 import "@contracts/common/errors"
 import "@contracts/common/signature-domain"
 import "@contracts/common/storage"
+import "beta-tokenomics-fixtures"
 
 const TEST_NETWORK_ID: int32 = -239
-const TEAM_ALLOCATION: coins = 300000000000000000 // 300M * 10^9 (10% of 3B)
+const TEAM_ALLOCATION: coins = BETA_TEAM_ALLOCATION // 100M * 10^9 (10% of 1B Reference)
 
 fun setupTeamUnlockVault(): (TeamUnlockVault, KeyPair, Treasury, Treasury, Treasury) {
     val admin = testing.treasury("team-admin");
@@ -105,8 +106,8 @@ get fun `test TeamUnlockVault attests round 1 with valid oracle signature and KP
     );
     expect(attestRes).toHaveAllSuccessfulTxs();
 
-    // 10% base round = 30M, at 80% parity = 24M
-    val expectedVested: coins = 24000000000000000;
+    // 10% base round = 10M, at 80% parity = 8M
+    val expectedVested: coins = 8000000000000000;
     val data = vault.getTeamVestingData();
     expect(data.vestedAmount).toEqual(expectedVested);
     expect(vault.isRoundUnlocked(1)).toEqual(true);

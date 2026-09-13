@@ -127,7 +127,7 @@ struct (0x8a100003) ReleaseReserveToAgent {
     recipient: address
     amount: coins
     stage: uint8
-    bucketId: uint8 // 0 = Seed, 1 = Compute, 2 = Ecosystem
+    bucketId: uint8 // 0 = Seed, 1 = Growth, 2 = Demand
 }
 
 struct (0x8a100004) PauseReserveVault {

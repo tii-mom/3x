@@ -3,8 +3,9 @@ import "@acton/emulation/testing"
 import "@acton/testing/expect"
 import "@wrappers/ThreeXJettonMinter.gen"
 import "@contracts/common/storage"
+import "beta-tokenomics-fixtures"
 
-const MAX_3X_SUPPLY: coins = 3000000000000000000 // 3,000,000,000 * 10^9
+const TEST_REFERENCE_SUPPLY: coins = BETA_REFERENCE_SUPPLY
 
 fun buildTestMetadata(): cell {
     return beginCell().storeUint(0, 8).endCell();
@@ -16,7 +17,7 @@ fun setupJettonTest(): (ThreeXJettonMinter, Treasury, Treasury) {
 
     val minterStorage: ThreeXMinterStorage = {
         totalSupply: 0,
-        maxSupply: MAX_3X_SUPPLY,
+        maxSupply: TEST_REFERENCE_SUPPLY,
         mintable: true,
         adminAddress: admin.address,
         nextAdminAddress: null,

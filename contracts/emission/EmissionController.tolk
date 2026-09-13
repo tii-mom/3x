@@ -1,3 +1,4 @@
+import "@contracts/common/economic-buckets"
 import "@contracts/common/errors"
 import "@contracts/common/messages"
 import "@contracts/common/signature-domain"
@@ -162,7 +163,7 @@ fun onInternalMessage(in: InMessage) {
             storage.claimedStages.set(msg.agentId, updatedMask);
             storage.save();
 
-            // Forward release request to AIReserveVault (Bucket 2: Ecosystem Growth)
+            // Forward release request to AIReserveVault (Bucket 1: Growth)
             val releaseMsg = createMessage({
                 bounce: BounceMode.Only256BitsOfBody,
                 dest: storage.reserveVault,
@@ -173,7 +174,7 @@ fun onInternalMessage(in: InMessage) {
                     recipient: msg.ownerAddress,
                     amount: subsidyAmount,
                     stage: msg.stage,
-                    bucketId: 2, // Ecosystem Growth
+                    bucketId: BUCKET_GROWTH, // Growth
                 },
             });
             releaseMsg.send(SEND_MODE_CARRY_ALL_REMAINING_MESSAGE_VALUE);

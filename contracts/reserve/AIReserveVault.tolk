@@ -1,3 +1,4 @@
+import "@contracts/common/economic-buckets"
 import "@contracts/common/errors"
 import "@contracts/common/messages"
 import "@contracts/common/storage"
@@ -79,23 +80,23 @@ fun onInternalMessage(in: InMessage) {
                 storage.totalReleased + msg.amount <= storage.globalHardCap
             ) throw Errors.CapExceeded;
 
-            // Sub-bucket Caps: 0 = Seed (4%), 1 = Compute (60%), 2 = Ecosystem (16%)
+            // Sub-bucket Caps: 0 = Seed (4%), 1 = Growth (60%), 2 = Demand (16%)
             var buckets = storage.buckets.load();
-            if (msg.bucketId == 0) {
+            if (msg.bucketId == BUCKET_SEED) {
                 assert (
                     buckets.seedReleased + msg.amount <= buckets.seedCap
                 ) throw Errors.CapExceeded;
                 buckets.seedReleased += msg.amount;
-            } else if (msg.bucketId == 1) {
+            } else if (msg.bucketId == BUCKET_GROWTH) {
                 assert (
-                    buckets.computeReleased + msg.amount <= buckets.computeCap
+                    buckets.growthReleased + msg.amount <= buckets.growthCap
                 ) throw Errors.CapExceeded;
-                buckets.computeReleased += msg.amount;
-            } else if (msg.bucketId == 2) {
+                buckets.growthReleased += msg.amount;
+            } else if (msg.bucketId == BUCKET_DEMAND) {
                 assert (
-                    buckets.ecosystemReleased + msg.amount <= buckets.ecosystemCap
+                    buckets.demandReleased + msg.amount <= buckets.demandCap
                 ) throw Errors.CapExceeded;
-                buckets.ecosystemReleased += msg.amount;
+                buckets.demandReleased += msg.amount;
             } else {
                 throw Errors.InvalidOp;
             }
@@ -154,12 +155,12 @@ get fun get_vault_data(): VaultDataReply {
 get fun get_bucket_released(bucketId: int): (coins, coins) {
     val storage = lazy AiReserveStorage.load();
     val buckets = storage.buckets.load();
-    if (bucketId == 0) {
+    if (bucketId == BUCKET_SEED) {
         return (buckets.seedCap, buckets.seedReleased);
-    } else if (bucketId == 1) {
-        return (buckets.computeCap, buckets.computeReleased);
-    } else if (bucketId == 2) {
-        return (buckets.ecosystemCap, buckets.ecosystemReleased);
+    } else if (bucketId == BUCKET_GROWTH) {
+        return (buckets.growthCap, buckets.growthReleased);
+    } else if (bucketId == BUCKET_DEMAND) {
+        return (buckets.demandCap, buckets.demandReleased);
     }
     return (0, 0);
 }

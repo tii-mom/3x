@@ -4,7 +4,9 @@ import "@acton/emulation/network"
 import "@acton/emulation/testing"
 import "@acton/testing/expect"
 import "@wrappers/EmissionController.gen"
+import "@contracts/common/economic-buckets"
 import "@contracts/common/errors"
+import "@contracts/common/messages"
 import "@contracts/common/signature-domain"
 import "@contracts/common/storage"
 
@@ -186,7 +188,7 @@ get fun `test EmissionController rejects replay nonce`() {
 }
 
 get fun `test EmissionController rejects duplicate growth stage claim`() {
-    val (controller, oracleKp, _admin, _mockVault, user) = setupEmissionController();
+    val (controller, oracleKp, _admin, mockVault, user) = setupEmissionController();
 
     val agentId = 5005;
     val stage: uint8 = 1;
@@ -222,6 +224,21 @@ get fun `test EmissionController rejects duplicate growth stage claim`() {
     );
     expect(claimRes1).toHaveAllSuccessfulTxs();
     expect(controller.isStageClaimed(agentId, stage)).toEqual(true);
+
+    // Verify message sent to mockVault is ReleaseReserveToAgent with bucketId = BUCKET_GROWTH (1)
+    val expectedReleaseBody = (ReleaseReserveToAgent {
+        queryId: 0,
+        agentId,
+        recipient: user.address,
+        amount: 100000000000, // Stage 1 growth subsidy
+        stage,
+        bucketId: BUCKET_GROWTH,
+    }).toCell();
+    expect(claimRes1).toHaveTx({
+        from: controller.address,
+        to: mockVault.address,
+        body: expectedReleaseBody,
+    });
 
     // Attempt to claim same stage 1 with new nonce
     val claimHash2 = buildGrowthClaimHash(
