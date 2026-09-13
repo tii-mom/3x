@@ -38,11 +38,11 @@ jobs:
       - name: Format Check
         run: acton fmt --check
 
-      - name: Check Tolk Sources
-        run: acton check --output-format github
-
       - name: Build Tolk Contracts
         run: acton build
+
+      - name: Check Tolk Sources
+        run: acton check --output-format github
 
       - name: Run TVM Emulator Tests
         run: acton test
