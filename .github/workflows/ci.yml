@@ -1,0 +1,70 @@
+name: 3X CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    name: Tolk Smart Contracts
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Acton Toolchain
+        uses: ton-blockchain/setup-acton@v1
+
+      - name: Check Tolk Sources
+        run: acton check
+
+      - name: Build Tolk Contracts
+        run: acton build
+
+      - name: Run TVM Emulator Tests
+        run: acton test
+
+  frontend-and-ledger:
+    name: Frontend & Economic Ledger
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck / Lint
+        run: pnpm run lint
+
+      - name: Run Domain & Ledger Unit Tests
+        run: pnpm test
+
+      - name: Build Frontend Production Bundle
+        run: pnpm run build

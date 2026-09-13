@@ -1,0 +1,27 @@
+enum Errors {
+    BalanceError = 47
+    NotEnoughGas = 48
+    InvalidMessage = 49
+    InvalidOp = 72
+    NotOwner = 73
+    NotValidWallet = 74
+    WrongWorkchain = 333
+    SupplyCapExceeded = 401
+    UnauthorizedMinter = 402
+    MintingDisabled = 403
+    CapExceeded = 404
+    InvalidSignature = 405
+    ExpiredAttestation = 406
+    ReplayNonce = 407
+    WrongDomain = 408
+    WrongController = 409
+    WrongOwner = 410
+    DuplicateAgent = 411
+    StageAlreadyClaimed = 412
+    InvalidStage = 413
+    ControllerPaused = 414
+    MatureEraNoSubsidy = 415
+    KpiNotMet = 416
+    RoundAlreadyUnlocked = 417
+    UnauthorizedCaller = 418
+}
