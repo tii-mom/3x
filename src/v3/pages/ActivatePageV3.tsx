@@ -59,9 +59,9 @@ export const ActivatePageV3: React.FC = () => {
           <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-sm">
             3X
           </div>
-          <span className="font-bold text-sm tracking-tight text-slate-800">Activate on Testnet</span>
+          <span className="font-bold text-sm tracking-tight text-slate-800">Agent Activation</span>
         </Link>
-        <SimulationBadge environment="testnet" />
+        <SimulationBadge environment="simulation" />
       </header>
 
       {/* Main Content */}
@@ -72,10 +72,10 @@ export const ActivatePageV3: React.FC = () => {
               <ShieldCheck className="w-7 h-7" />
             </div>
             <h1 className="text-xl font-bold text-slate-900 tracking-tight">
-              Activate {data.agent.name} on TON Testnet
+              Activate {data.agent.name}
             </h1>
             <p className="text-xs text-slate-500 mt-1">
-              Deploy Agentic Subwallet with split-key security and owner root revocation
+              Deploy Agentic Subwallet simulation with split-key security and owner root revocation
             </p>
           </div>
 
@@ -202,7 +202,7 @@ export const ActivatePageV3: React.FC = () => {
 
       {/* Footer */}
       <footer className="max-w-lg w-full mx-auto px-6 py-6 text-center text-xs text-slate-400">
-        TON Testnet / Devnet environment • Smart contracts written in Tolk • MAINNET_EXECUTION is strictly false
+        Simulation environment • Smart contracts run on local TVM emulator / sandbox • MAINNET_EXECUTION is strictly false
       </footer>
     </div>
   );

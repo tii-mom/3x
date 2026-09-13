@@ -1,7 +1,7 @@
 // 3X V3.1 Living Agent — Domain Types & Schemas
 // Source of truth: schemas/openapi.yaml, schemas/db_schema.sql, schemas/event_catalog.yaml
 
-export type Environment = 'simulation' | 'testnet' | 'mainnet';
+export type Environment = 'simulation' | 'local_tvm' | 'testnet' | 'mainnet';
 
 export type AgentState = 
   | 'READY' 
