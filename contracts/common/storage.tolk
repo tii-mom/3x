@@ -82,6 +82,17 @@ fun AiReserveStorage.save(self) {
     contract.setData(self.toCell());
 }
 
+struct AgentRecord {
+    agentId: uint256
+    ownerAddress: address
+    generation: uint8
+    registeredIndex: uint32
+    registeredAt: uint32
+    initialSeedBasis: coins
+    growthVaultCap: coins
+    claimedStagesMask: uint32
+}
+
 struct EmissionStorage {
     owner: address
     reserveVault: address
@@ -89,7 +100,8 @@ struct EmissionStorage {
     networkId: int32
     registeredAgentsCount: uint32
     usedNonces: map<uint64, bool>
-    claimedStages: map<uint256, uint32>
+    agents: map<uint256, AgentRecord>
+    ownerAgents: map<address, uint256>
     isPaused: bool
 }
 

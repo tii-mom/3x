@@ -17,6 +17,7 @@ enum Errors {
     WrongController = 409
     WrongOwner = 410
     DuplicateAgent = 411
+    DuplicateOwner = 420
     StageAlreadyClaimed = 412
     InvalidStage = 413
     ControllerPaused = 414

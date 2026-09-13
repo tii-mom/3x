@@ -7,6 +7,7 @@ import "@acton/build"
 import "@acton/emulation/network"
 import "@acton/testing/assert"
 import "@contracts/common/messages"
+import "@contracts/common/storage"
 import "@contracts/emission/EmissionController"
 
 struct EmissionController {
@@ -64,6 +65,18 @@ fun EmissionController.getGenerationInfo(self): EmissionInfoReply {
 
 fun EmissionController.isStageClaimed(self, agentId: uint256, stage: int): bool {
     return net.runGetMethod(self.address, "is_stage_claimed", [agentId, stage]);
+}
+
+fun EmissionController.getAgentRecord(self, agentId: uint256): AgentRecord? {
+    return net.runGetMethod(self.address, "get_agent_record", [agentId]);
+}
+
+fun EmissionController.getAgentByOwner(self, ownerAddr: address): uint256? {
+    return net.runGetMethod(self.address, "get_agent_by_owner", [ownerAddr]);
+}
+
+fun EmissionController.getGenerationEntitlement(self, generation: int): (coins, coins) {
+    return net.runGetMethod(self.address, "get_generation_entitlement", [generation]);
 }
 
 fun EmissionController.sendRegisterPrimaryAi(
