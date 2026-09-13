@@ -7,7 +7,7 @@ import { GrowthEngine } from '../engine/growthEngine';
 import { AgenticWalletManager } from '../ton/agenticWallet';
 import { OpportunityItem, AgentProfile } from '../models/types';
 
-console.log('--- Running Gate 5 Beta Instrumentation & End-to-End Test Suite ---');
+console.log('--- Running Gate 5 Prototype Instrumentation & Simulated Journey Tests ---');
 
 // 1. Productivity Metrics Test
 console.log('Test 1: Compute ROI and Token Productivity Calculations...');
@@ -107,7 +107,7 @@ assert.equal(sm.getState(), 'WORKING');
 sm.transitionTo('SETTLING');
 assert.equal(sm.getState(), 'SETTLING');
 
-// Step 3d: TON Testnet Activation
+// Step 3d: Simulated Agentic Wallet Activation
 const ownerAddress = 'EQC_e2e_owner_wallet_address_781';
 const activationPayload = AgenticWalletManager.prepareActivation(ownerAddress);
 assert.equal(activationPayload.networkFeeTon, '0.045');
@@ -167,5 +167,6 @@ assert.equal(sm.getState(), 'READY');
 console.log('✓ Test 3 Passed: Full End-to-End User Journey Loop verified!');
 
 console.log('\n==========================================================');
-console.log('ALL GATES 1 - 5 HAVE PASSED 100% OF ACCEPTANCE CRITERIA! 🚀');
+console.log('ALL CURRENT V3 PROTOTYPE UNIT TESTS PASSED.');
+console.log('Real TON Testnet, persistent backend, and Beta acceptance gates remain pending.');
 console.log('==========================================================');

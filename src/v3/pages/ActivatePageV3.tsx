@@ -10,7 +10,7 @@ export const ActivatePageV3: React.FC = () => {
     data,
     isWalletConnected,
     ownerAddress,
-    isActivatedTestnet,
+    isActivatedTestnet: isSimulationActivated,
     connectOwnerWallet,
     prepareActivation,
     confirmActivation,
@@ -25,8 +25,8 @@ export const ActivatePageV3: React.FC = () => {
   const [isDeploying, setIsDeploying] = useState(false);
 
   const handleConnectWallet = () => {
-    // Connect mock TON Testnet owner wallet
-    connectOwnerWallet('EQC_owner_testnet_7721a9');
+    // Connect demo owner wallet
+    connectOwnerWallet('EQC_owner_demo_7721a9');
   };
 
   const handlePrepare = async () => {
@@ -80,14 +80,14 @@ export const ActivatePageV3: React.FC = () => {
           </div>
 
           {/* Already Activated State */}
-          {isActivatedTestnet ? (
+          {isSimulationActivated ? (
             <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-center mb-6">
               <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-2">
                 <ShieldCheck className="w-5 h-5" />
               </div>
-              <p className="text-sm font-semibold text-emerald-800">Agentic Wallet Active</p>
+              <p className="text-sm font-semibold text-emerald-800">Agent simulation active</p>
               <p className="text-xs text-emerald-600 mt-0.5">
-                {data.agent.name} is already activated on TON Testnet.
+                {data.agent.name} is active in Simulation mode.
               </p>
               <button
                 onClick={() => navigate('/app')}
@@ -102,7 +102,7 @@ export const ActivatePageV3: React.FC = () => {
               <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                    Step 1: Owner Wallet
+                    Step 1: Demo Owner Wallet
                   </span>
                   {isWalletConnected ? (
                     <span className="text-xs font-semibold text-emerald-600 flex items-center gap-1">
@@ -117,8 +117,8 @@ export const ActivatePageV3: React.FC = () => {
                 {isWalletConnected ? (
                   <div className="flex items-center justify-between text-xs font-mono text-slate-700 bg-white p-2.5 rounded-xl border border-slate-200">
                     <span>{ownerAddress}</span>
-                    <span className="text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-md font-sans font-medium">
-                      TON Testnet
+                    <span className="text-[10px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded-md font-sans font-medium">
+                      Demo Wallet
                     </span>
                   </div>
                 ) : (
@@ -128,7 +128,7 @@ export const ActivatePageV3: React.FC = () => {
                     className="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
                     <Wallet className="w-4 h-4" />
-                    <span>Connect TON Testnet Wallet</span>
+                    <span>Connect Demo Wallet</span>
                   </button>
                 )}
               </div>
@@ -149,7 +149,7 @@ export const ActivatePageV3: React.FC = () => {
                     className="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer disabled:opacity-50"
                   >
                     {isPreparing ? <RefreshCw className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />}
-                    <span>{isPreparing ? 'Preparing Estimate...' : 'Estimate Network Gas & Deploy'}</span>
+                    <span>{isPreparing ? 'Preparing Estimate...' : 'Simulate Deployment & Gas'}</span>
                   </button>
                 </div>
               )}
@@ -158,7 +158,7 @@ export const ActivatePageV3: React.FC = () => {
               {activationPrepared && (
                 <div className="p-4 rounded-2xl bg-blue-50/50 border border-blue-200 space-y-3">
                   <div className="flex items-center justify-between text-xs font-semibold text-slate-800">
-                    <span>Estimated TON Network Gas:</span>
+                    <span>Estimated Demo Gas:</span>
                     <span className="font-mono text-blue-700 text-sm font-bold">
                       {activationPrepared.networkFeeEstimate}
                     </span>
@@ -168,7 +168,7 @@ export const ActivatePageV3: React.FC = () => {
                     <div className="flex items-start gap-1.5">
                       <AlertCircle className="w-3.5 h-3.5 text-blue-600 shrink-0 mt-0.5" />
                       <span>
-                        <strong>Network Fee Disclosure:</strong> This fee is consumed purely by TON Testnet validator gas for contract deployment. Zero platform fees are collected.
+                        <strong>Fee Disclosure:</strong> This is a simulated network-fee estimate for product testing. No TON transaction is broadcast and no real network fee is charged.
                       </span>
                     </div>
                   </div>
@@ -180,7 +180,7 @@ export const ActivatePageV3: React.FC = () => {
                     className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-blue-glow transition-all cursor-pointer disabled:opacity-50"
                   >
                     {isDeploying ? <RefreshCw className="w-4 h-4 animate-spin" /> : <ArrowRight className="w-4 h-4" />}
-                    <span>{isDeploying ? 'Broadcasting on Testnet...' : 'Sign & Activate on Testnet'}</span>
+                    <span>{isDeploying ? 'Activating simulation...' : 'Activate in Simulation'}</span>
                   </button>
                 </div>
               )}

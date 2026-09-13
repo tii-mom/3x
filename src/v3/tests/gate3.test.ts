@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { AgenticWalletManager } from '../ton/agenticWallet';
 import { TransactionIntentPipeline, TypedTransactionIntent } from '../ton/intentPipeline';
 
-console.log('--- Running Gate 3 Unit Tests ---');
+console.log('--- Running Gate 3 Unit Tests (Local Prototype Stubs) ---');
 
 // 1. Test Agentic Wallet Preparation
 console.log('Test 1: Agentic Wallet Preparation & Network Fee Disclosure...');
@@ -31,8 +31,8 @@ assert.equal(revokedWallet.status, 'REVOKED');
 assert.equal(revokedWallet.agenticWalletAddress, undefined);
 console.log('✓ Test 3 Passed: Immediate revocation capability verified.');
 
-// 4. Test Transaction Intent Pipeline (Approved Case)
-console.log('Test 4: Intent Pipeline Approved Execution...');
+// 4. Test Transaction Intent Pipeline (Approved Case - Local Prototype Stub)
+console.log('Test 4: Prototype Intent Risk-Gate Simulation...');
 const approvedIntent: TypedTransactionIntent = {
   id: 'int_001',
   network: 'testnet',
@@ -44,9 +44,10 @@ const approvedIntent: TypedTransactionIntent = {
   state: 'CREATED',
 };
 const processedApproved = TransactionIntentPipeline.processIntent(approvedIntent);
+// State remains CONFIRMED for compatibility with local prototype stub
 assert.equal(processedApproved.state, 'CONFIRMED');
 assert.equal(processedApproved.simulatedSuccess, true);
-console.log('✓ Test 4 Passed: Approved intent confirmed.');
+console.log('✓ Test 4 Passed: Prototype approved intent passed local simulated pipeline.');
 
 // 5. Test Unknown Contract Rejection
 console.log('Test 5: Rejection of Unapproved Contract...');
@@ -99,4 +100,4 @@ assert.equal(processedSlippage.state, 'DENIED');
 assert.ok(processedSlippage.denialReason?.includes('Slippage tolerance exceeds'));
 console.log('✓ Test 7 Passed: Excessive slippage DENIED.');
 
-console.log('\nALL GATE 3 UNIT TESTS PASSED SUCCESSFULLY! 🚀');
+console.log('\nALL GATE 3 PROTOTYPE UNIT TESTS PASSED SUCCESSFULLY! 🚀');
